@@ -7,6 +7,7 @@
 namespace fs = std::filesystem;
 
 
+// Searches file for key word that is needed to be searched 
 void searchFile(const fs::path& filename, const std::string& pattern) {
 	// Opens the file 
     std::ifstream file(filename);
