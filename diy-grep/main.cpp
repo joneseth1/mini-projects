@@ -1,47 +1,55 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 
-// Takes two params, the filename and string pattern to search for 
-void searchFile(const std::string& filename, const std::string& pattern) {
-	std::ifstream file(filename);
-	if (!file.is_open()) { // Checks to see if file can be opened, if not then errors out 
-		std::cerr << "ERROR: Could not open file " << filename << std::endl; 
-		return; 
-	}
+void searchFile(const fs::path& filename, const std::string& pattern) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Couldn't open file " << filename << std::endl;
+        return;
+    }
 
-	// Reads line by line and checks if pattern is found
-	// If pattern is found, then prints it 
-	std::string line;
-	int lineNumber = 0;
+    std::string line;
+    int lineNumber = 0;
 
-	while (std::getline(file, line)) {
-		lineNumber++; 
-		size_t found = line.find(pattern);
-		if (found != std::string::npos) {
-			std::cout << "At Line " << lineNumber << ": " << line << std::endl; 
-		}
-	}
+    while (std::getline(file, line)) {
+        lineNumber++;
+        size_t found = line.find(pattern);
+        if (found != std::string::npos) {
+            std::cout << "Found at line " << lineNumber << " in file " << filename << ": " << line << std::endl;
+        }
+    }
 
-	file.close();
+    file.close();
 }
 
-
+void searchDirectory(const fs::path& path, const std::string& pattern) {
+    for (const auto& entry : fs::directory_iterator(path)) {
+        if (entry.is_directory()) {
+            searchDirectory(entry.path(), pattern);  // Recursively search subdirectories
+        } else if (entry.is_regular_file()) {
+            searchFile(entry.path(), pattern);
+        }
+    }
+}
 
 int main(int argc, char* argv[]) {
-	// Check for correct number of args
-	if ( argc != 3) {
-		std::cerr << "Usage: " << argv[0] << " <filename> <pattern>" << std::endl;
-		return 1;
-	}
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <path> <pattern>" << std::endl;
+        return 1;
+    }
 
-	std::string filename = argv[1];
-	std::string pattern = argv[2];
+    std::string path = argv[1];
+    std::string pattern = argv[2];
 
- 
-	searchFile(filename, pattern);
+    if (fs::is_directory(path)) {
+        searchDirectory(path, pattern);
+    } else {
+        searchFile(path, pattern);
+    }
 
-
-	return 0;
+    return 0;
 }
