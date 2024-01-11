@@ -2,17 +2,15 @@
 #include <fstream>
 #include <string>
 #include <filesystem>
-
+#include <algorithm>
+#include <regex>
 
 namespace fs = std::filesystem;
 
-
-// Searches file for key word that is needed to be searched 
 void searchFile(const fs::path& filename, const std::string& pattern, bool caseInsensitive) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: Couldn't open file " << filename << std::endl;
-        return;
+        throw std::runtime_error("Error: Couldn't open file " + filename.string());
     }
 
     std::string line;
@@ -25,16 +23,14 @@ void searchFile(const fs::path& filename, const std::string& pattern, bool caseI
         std::string patternCopy = pattern;
 
         if (caseInsensitive) {
-            // Convert both the line and pattern to lowercase (or uppercase)
             std::transform(lineCopy.begin(), lineCopy.end(), lineCopy.begin(), ::tolower);
             std::transform(patternCopy.begin(), patternCopy.end(), patternCopy.begin(), ::tolower);
         }
 
-        // Search for the pattern in the line
         size_t found = lineCopy.find(patternCopy);
         if (found != std::string::npos) {
-            // Print the line if the pattern is found
-            std::cout << "Found at line " << lineNumber << " in file " << filename << ": " << line << std::endl;
+            // Print colorized output (for demonstration purposes)
+            std::cout << "\033[1;31mFound at line " << lineNumber << " in file " << filename << ": " << line << "\033[0m\n";
         }
     }
 
@@ -44,9 +40,13 @@ void searchFile(const fs::path& filename, const std::string& pattern, bool caseI
 void searchDirectory(const fs::path& path, const std::string& pattern) {
     for (const auto& entry : fs::directory_iterator(path)) {
         if (entry.is_directory()) {
-            searchDirectory(entry.path(), pattern);  // Recursively search subdirectories
+            searchDirectory(entry.path(), pattern);
         } else if (entry.is_regular_file()) {
-            searchFile(entry.path(), pattern);
+            try {
+                searchFile(entry.path(), pattern, false); // Disable case-insensitivity for directories
+            } catch (const std::exception& e) {
+                std::cerr << e.what() << std::endl;
+            }
         }
     }
 }
@@ -65,11 +65,17 @@ int main(int argc, char* argv[]) {
         caseInsensitive = true;
     }
 
-    if (fs::is_directory(path)) {
-        searchDirectory(path, pattern, caseInsensitive);
-    } else {
-        searchFile(path, pattern, caseInsensitive);
+    try {
+        if (fs::is_directory(path)) {
+            searchDirectory(path, pattern);
+        } else {
+            searchFile(path, pattern, caseInsensitive);
+        }
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
     }
 
+    std::cout << "Search complete.\n";
     return 0;
 }
