@@ -87,4 +87,5 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Search complete.\n";
     return 0;
+    //TEST
 }
