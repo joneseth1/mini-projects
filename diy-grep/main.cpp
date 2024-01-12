@@ -7,6 +7,24 @@
 
 namespace fs = std::filesystem;
 
+bool matchWildcard(const std::string& str, const std::string& pattern) {
+    // Convert '*' and '?' to regex format
+    std::string regexPattern;
+    for (char c : pattern) {
+        if (c == '*') {
+            regexPattern += ".*";
+        } else if (c == '?') {
+            regexPattern += ".";
+        } else {
+            regexPattern += c;
+        }
+    }
+
+    // Create a regular expression object and match the string
+    std::regex regex(regexPattern);
+    return std::regex_match(str, regex);
+}
+
 void searchFile(const fs::path& filename, const std::string& pattern, bool caseInsensitive) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -27,10 +45,8 @@ void searchFile(const fs::path& filename, const std::string& pattern, bool caseI
             std::transform(patternCopy.begin(), patternCopy.end(), patternCopy.begin(), ::tolower);
         }
 
-        size_t found = lineCopy.find(patternCopy);
-        if (found != std::string::npos) {
-            // Print colorized output (for demonstration purposes)
-            std::cout << "\033[1;31mFound at line " << lineNumber << " in file " << filename << ": " << line << "\033[0m\n";
+        if (matchWildcard(lineCopy, patternCopy)) {
+            std::cout << "Found at line " << lineNumber << " in file " << filename << ": " << line << std::endl;
         }
     }
 
@@ -43,7 +59,7 @@ void searchDirectory(const fs::path& path, const std::string& pattern) {
             searchDirectory(entry.path(), pattern);
         } else if (entry.is_regular_file()) {
             try {
-                searchFile(entry.path(), pattern, false); // Disable case-insensitivity for directories
+                searchFile(entry.path(), pattern, false);
             } catch (const std::exception& e) {
                 std::cerr << e.what() << std::endl;
             }
