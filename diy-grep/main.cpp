@@ -7,25 +7,7 @@
 
 namespace fs = std::filesystem;
 
-bool matchWildcard(const std::string& str, const std::string& pattern) {
-    // Convert '*' and '?' to regex format
-    std::string regexPattern;
-    for (char c : pattern) {
-        if (c == '*') {
-            regexPattern += ".*";
-        } else if (c == '?') {
-            regexPattern += ".";
-        } else {
-            regexPattern += c;
-        }
-    }
-
-    // Create a regular expression object and match the string
-    std::regex regex(regexPattern);
-    return std::regex_match(str, regex);
-}
-
-void searchFile(const fs::path& filename, const std::string& pattern, bool caseInsensitive) {
+int searchFile(const fs::path& filename, const std::string& pattern, bool caseInsensitive) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Error: Couldn't open file " + filename.string());
@@ -33,6 +15,7 @@ void searchFile(const fs::path& filename, const std::string& pattern, bool caseI
 
     std::string line;
     int lineNumber = 0;
+    int matchCount = 0;
 
     while (std::getline(file, line)) {
         lineNumber++;
@@ -45,26 +28,32 @@ void searchFile(const fs::path& filename, const std::string& pattern, bool caseI
             std::transform(patternCopy.begin(), patternCopy.end(), patternCopy.begin(), ::tolower);
         }
 
-        if (matchWildcard(lineCopy, patternCopy)) {
-            std::cout << "Found at line " << lineNumber << " in file " << filename << ": " << line << std::endl;
+        size_t found = lineCopy.find(patternCopy);
+        if (found != std::string::npos) {
+            matchCount++;
         }
     }
 
     file.close();
+    return matchCount;
 }
 
-void searchDirectory(const fs::path& path, const std::string& pattern) {
+int searchDirectory(const fs::path& path, const std::string& pattern) {
+    int totalMatchCount = 0;
+
     for (const auto& entry : fs::directory_iterator(path)) {
         if (entry.is_directory()) {
-            searchDirectory(entry.path(), pattern);
+            totalMatchCount += searchDirectory(entry.path(), pattern);
         } else if (entry.is_regular_file()) {
             try {
-                searchFile(entry.path(), pattern, false);
+                totalMatchCount += searchFile(entry.path(), pattern, false);
             } catch (const std::exception& e) {
                 std::cerr << e.what() << std::endl;
             }
         }
     }
+
+    return totalMatchCount;
 }
 
 int main(int argc, char* argv[]) {
@@ -82,11 +71,15 @@ int main(int argc, char* argv[]) {
     }
 
     try {
+        int totalMatchCount = 0;
+
         if (fs::is_directory(path)) {
-            searchDirectory(path, pattern);
+            totalMatchCount = searchDirectory(path, pattern);
         } else {
-            searchFile(path, pattern, caseInsensitive);
+            totalMatchCount = searchFile(path, pattern, caseInsensitive);
         }
+
+        std::cout << "Total matches found: " << totalMatchCount << std::endl;
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return 1;
