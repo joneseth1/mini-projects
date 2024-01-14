@@ -14,11 +14,22 @@ void collatz(unsigned int n) {
     }
     std::cout << "1\n";
 }
+
+// Pseudo-random Collatz
+void pseudoRandomCollatz(unsigned int seed, int iterations) {
+    CustomPseudoRandom generator(seed);
+    for (int i = 0; i < iterations; ++i) {
+        unsigned int n = generator.getNext() % 100 + 1;  // Limit to 1-100 for variety
+        std::cout << "Starting Collatz sequence with seed " << n << ":\n";
+        collatz(n);
+        std::cout << "\n";
+    }
+}
  
 
 
 
 
 int main(){
-	return 0; 
+	pseudoRandomCollatz(42, 5); 
 }
