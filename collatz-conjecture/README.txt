@@ -1,0 +1,1 @@
+This is a small snippet of code to see if making a random number generator is possible using the collatz conjecture
