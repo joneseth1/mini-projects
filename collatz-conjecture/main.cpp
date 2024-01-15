@@ -6,7 +6,7 @@ private:
     unsigned int seed;
     const unsigned int a = 1664525;
     const unsigned int c = 1013904223;
-    const unsigned int m = 4294967296;  // 2^32
+    const unsigned int m = 4294967295;  // 2^32 - 1
 
 public:
     CustomPseudoRandom(unsigned int seed) : seed(seed) {}
