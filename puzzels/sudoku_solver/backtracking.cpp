@@ -6,7 +6,18 @@
 
 int solveSudoku(std::vector<std::vector<char>> &board)
 {
-    return 0;
+    std::array<std::bitset<9>, 9> row_contains = {0,0,0,0,0,0,0,0,0};
+    std::array<std::bitset<9>, 9> col_contains = {0,0,0,0,0,0,0,0,0};
+    std::array<std::bitset<9>, 9> cell_contains = {0,0,0,0,0,0,0,0,0};
+
+    for (std::size_t, row = 0; col < 9; ++col)
+    {
+        char digit;
+        if ((digit = board[row][col]) != '.')
+        {
+            std::size_t digit_idx = digit - '1';
+        }
+    }
 }
 
 
