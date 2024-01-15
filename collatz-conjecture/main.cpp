@@ -42,7 +42,6 @@ void pseudoRandomCollatz(unsigned int seed, int iterations) {
 }
 
 int main() {
-    // Example usage
     pseudoRandomCollatz(42, 5);
 
     return 0;
