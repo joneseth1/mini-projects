@@ -10,10 +10,10 @@ int solveSudoku(std::vector<std::vector<char>> &board)
     std::array<std::bitset<9>, 9> col_contains = {0,0,0,0,0,0,0,0,0};
     std::array<std::bitset<9>, 9> cell_contains = {0,0,0,0,0,0,0,0,0};
 
-    for (std::size_t, row = 0; col < 9; ++col)
+    for (std::size_t; row = 0; row < 9; ++row)
     {
         char digit;
-        if ((digit = board[row][col]) != '.')
+        if ((digit = board[row][row]) != '.')
         {
             std::size_t digit_idx = digit - '1';
         }
