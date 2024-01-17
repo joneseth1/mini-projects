@@ -4,20 +4,26 @@
 #include <iostream>
 
 
-int solveSudoku(std::vector<std::vector<char>> &board)
-{
-    std::array<std::bitset<9>, 9> row_contains = {0,0,0,0,0,0,0,0,0};
-    std::array<std::bitset<9>, 9> col_contains = {0,0,0,0,0,0,0,0,0};
-    std::array<std::bitset<9>, 9> cell_contains = {0,0,0,0,0,0,0,0,0};
+bool solveSudokuHelper(std::vector<std::vector<char>> &board) {
+    for (int row = 0; row < 9; ++row) {
+        for (int col = 0; col < 9; ++col) {
+            if (board[row][col] == '.') {
+                for (char num = '1'; num <= '9'; ++num) {
+                    if (isValid(board, row, col, num)) {
+                        board[row][col] = num;
 
-    for (std::size_t; row = 0; row < 9; ++row)
-    {
-        char digit;
-        if ((digit = board[row][row]) != '.')
-        {
-            std::size_t digit_idx = digit - '1';
+                        if (solveSudokuHelper(board)) {
+                            return true;
+                        }
+
+                        board[row][col] = '.';
+                    }
+                }
+                return false;
+            }
         }
     }
+    return true;
 }
 
 
