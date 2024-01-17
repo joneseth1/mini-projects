@@ -4,6 +4,30 @@
 #include <iostream>
 
 
+bool isValid(const std::vector<std::vector<char>> &board, int row, int col, char num) {
+    // Check if 'num' is not present in the current row and column
+    for (int i = 0; i < 9; ++i) {
+        if (board[row][i] == num || board[i][col] == num) {
+            return false;
+        }
+    }
+
+    // Check if 'num' is not present in the current 3x3 subgrid
+    int startRow = 3 * (row / 3);
+    int startCol = 3 * (col / 3);
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (board[startRow + i][startCol + j] == num) {
+                return false;
+            }
+        }
+    }
+
+    // If 'num' is not present in the current row, column, and subgrid, it's a valid move
+    return true;
+}
+
+
 bool solveSudokuHelper(std::vector<std::vector<char>> &board) {
     for (int row = 0; row < 9; ++row) {
         for (int col = 0; col < 9; ++col) {
@@ -71,7 +95,7 @@ int main()
     std::cout << "expected\n";
     print_board(expected);
 
-    solveSudoku(board);
+    solveSudokuHelper(board);
     std::cout << (board == expected ? "Solved!" : "Not solved!") << std::endl;
     std::cout << "actual\n";
     print_board(board);
