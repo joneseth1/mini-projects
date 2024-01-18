@@ -4,12 +4,20 @@
 
 void calc_fib(int n) 
 {
-	int a = 0, b = 0;
-	for (int i = 0; i < n; ++i) 
+	long long  a = 0, b = 1, sum = 0;
+	
+	while (b <= n)
 	{
-		b = a + b;
-		a = b - a;
+		if (b % 2 == 0)
+		{
+			sum += b;
+		}
+		long long temp = a + b;
+		a = b;
+		b = temp;
 	}
+	
+	std::cout << "Sum is: " << sum << std::endl; 
 }
 
 
