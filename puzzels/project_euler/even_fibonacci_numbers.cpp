@@ -41,9 +41,40 @@ std::vector<std::vector<long long>> multiply(const std::vector<std::vector<long 
     return result;
 }
 
+// Calculate matrix power 
+std::vector<std::vector<long long>> matrixPower(const std::vector<std::vector<long long>>& matrix, int power)
+{
+	int size = matrix.size();
+
+	if (power == 1)
+	{
+		return matrix;
+	}
+
+	if (power % 2 == 0)
+	{
+		auto halfPower = matrixPower(matrix, power / 2);
+		return multiply(halfPower, halfPower);
+	} else {
+		auto halfPower = matrixPower(matrix, (power - 1) / 2);
+		auto result = multiply(halfPower, halfPower);
+		return multiply(result, matrix);
+	}
+}
 
 
+long long fibonacciMatrix(int n) 
+{
+	if (n <= 0)
+	{
+		return 0;
+	}
 
+	std::vector<std::vector<long long>> baseMatrix = {{1, 1}, {1, 0}};
+    auto resultMatrix = matrixPower(baseMatrix, n - 1);
+
+    return resultMatrix[0][0];
+}
 
 
 
@@ -54,6 +85,8 @@ std::vector<std::vector<long long>> multiply(const std::vector<std::vector<long 
 int main() 
 {
 	int n = 4000000;
-	
+	long long result = fibonacciMatrix(n);
+
+	std::cout << "Result: " << result << std::endl;
 	return 0;
 }
