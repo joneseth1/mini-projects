@@ -31,5 +31,5 @@ function nqueens(N)
     solve_nqueens(board, 1, N)
 end
 
-# Example: Solve the 8-Queens problem
+
 nqueens(8)

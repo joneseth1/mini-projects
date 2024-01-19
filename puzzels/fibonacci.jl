@@ -14,7 +14,7 @@ function generate_fibonacci_sequence(count)
     return fibonacci_sequence
 end
 
-# Change the value of 'count' to generate Fibonacci numbers up to a specific count
+
 count = 10
 fibonacci_sequence = generate_fibonacci_sequence(count)
 
