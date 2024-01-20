@@ -19,28 +19,27 @@ int get_mouse_pos()
 }
 
 
-void collatz(int n)
+std::pair<int, int> collatz_prng(int n)
 {
-    auto start_time = high_resolution_clock::now(); // Record the start time
-
+    int count = 0;
     while (n != 1)
     {
-        std::cout << n << " ";
         if (n % 2 == 0)
         {
             n = n / 2;
-        } 
-        else {
-            n = 3 * n + 1;
+        count++;
         }
+        else
+        {
+            n = 3 * n + 1;
+        count++;
+        }
+        
     }
 
-    std::cout << "Num: " << n << std::endl;
-    // auto end_time = high_resolution_clock::now(); // Record the end time
-    // auto duration = duration_cast<milliseconds>(end_time - start_time); // Calculate the duration
-
-    // std::cout << "\nRandom Number: " << duration.count() << std::endl;
+    return std::make_pair(n, count);
 }
+
 
 
 int main() {
@@ -52,8 +51,11 @@ int main() {
     long long seed = (currentTimeInSeconds * cursor);
 
     std::cout << "Seed: " << seed << std::endl;
+    // Use Collatz as a PRNG and get the count
+    std::pair<int, int> result = collatz_prng(seed);
 
-    collatz(seed); 
+    std::cout << "End Number: " << result.first << std::endl;
+    std::cout << "Random Number: " << result.second << std::endl;
 
     return 0;
 }
