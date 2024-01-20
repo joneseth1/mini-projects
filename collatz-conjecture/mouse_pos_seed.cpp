@@ -35,10 +35,11 @@ void collatz(int n)
         }
     }
 
-    auto end_time = high_resolution_clock::now(); // Record the end time
-    auto duration = duration_cast<milliseconds>(end_time - start_time); // Calculate the duration
+    std::cout << "Num: " << n << std::endl;
+    // auto end_time = high_resolution_clock::now(); // Record the end time
+    // auto duration = duration_cast<milliseconds>(end_time - start_time); // Calculate the duration
 
-    std::cout << "\nRandom Number: " << duration.count() << std::endl;
+    // std::cout << "\nRandom Number: " << duration.count() << std::endl;
 }
 
 
