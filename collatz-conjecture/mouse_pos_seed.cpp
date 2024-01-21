@@ -27,7 +27,6 @@ std::pair<int, int> collatz_prng(int n)
         if (n % 2 == 0)
         {
             n = n / 2;
-        count++;
         }
         else
         {
@@ -48,7 +47,7 @@ int main() {
     auto currentTimePoint = system_clock::now();
     auto currentTimeInSeconds = duration_cast<seconds>(currentTimePoint.time_since_epoch()).count();
 
-    long long seed = (currentTimeInSeconds * cursor);
+    long long seed = (currentTimeInSeconds / cursor);
 
     std::cout << "Seed: " << seed << std::endl;
     // Use Collatz as a PRNG and get the count
