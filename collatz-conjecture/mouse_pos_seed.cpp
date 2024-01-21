@@ -2,6 +2,7 @@
 #include <fstream>
 #include <Windows.h>
 #include <chrono>
+#include <bitset>
 #include <vector>
 
 using namespace std::chrono;
@@ -19,7 +20,7 @@ int get_mouse_pos()
     }
 }
 
-std::pair<int, int> collatz_prng(int n)
+int collatz_prng(int n)
 {
     int count = 0;
     while (n != 1)
@@ -27,21 +28,28 @@ std::pair<int, int> collatz_prng(int n)
         if (n % 2 == 0)
         {
             n = n / 2;
+            count++;
         }
         else
         {
             n = 3 * n + 1;
-            count++;
         }
     }
 
-    return std::make_pair(n, count);
+    return count;
 }
 
-void write_binary_file(const std::string& filename, const std::vector<char>& data)
+void write_binary_file(const std::string& filename, int number)
 {
     std::ofstream file(filename, std::ios::binary);
-    file.write(data.data(), data.size());
+
+    // Convert the integer to its binary representation as a string
+    std::bitset<32> binaryRepresentation(number);
+    std::string binaryString = binaryRepresentation.to_string();
+
+    // Write the binary string to the file
+    file.write(binaryString.c_str(), binaryString.size());
+
     file.close();
 }
 
@@ -55,24 +63,15 @@ int main()
     long long seed = (currentTimeInSeconds / cursor);
 
     std::cout << "Seed: " << seed << std::endl;
-    
-    // Use Collatz as a PRNG and get the count
-    std::pair<int, int> result = collatz_prng(seed);
 
-    std::cout << "End Number: " << result.first << std::endl;
-    std::cout << "Random Number: " << result.second << std::endl;
+    // Use Collatz as a PRNG and get the random number
+    int randomNumber = collatz_prng(seed);
 
-    // Generate random bytes based on the count
-    std::vector<char> randomBytes(result.second);
-    for (int i = 0; i < result.second; ++i)
-    {
-        result = collatz_prng(result.first); // Use Collatz again for more random numbers
-        randomBytes[i] = static_cast<char>(result.first);
-    }
+    std::cout << "Random Number: " << randomNumber << std::endl;
 
-    // Write the random bytes to a binary file
+    // Write the random number to a binary file
     std::string filename = "random_binary_file.bin";
-    write_binary_file(filename, randomBytes);
+    write_binary_file(filename, randomNumber);
 
     std::cout << "Random binary file created: " << filename << std::endl;
 
