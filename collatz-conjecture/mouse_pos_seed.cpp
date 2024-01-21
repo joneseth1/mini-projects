@@ -7,54 +7,59 @@
 
 using namespace std::chrono;
 
-int get_mouse_pos()
-{
-    while (true)
-    {
+int get_mouse_pos() {
+    while (true) {
         POINT p;
-        if (GetCursorPos(&p))
-        {
+        if (GetCursorPos(&p)) {
             return p.x;
         }
-        Sleep(1000);
     }
 }
+std::vector<int> collatz_prng(int n, int i) {
+    std::vector<int> counts;
+    int iterations = 0;
 
-int collatz_prng(int n)
-{
-    int count = 0;
-    while (n != 1)
-    {
-        if (n % 2 == 0)
-        {
-            n = n / 2;
-            count++;
+    while (iterations <= i) {
+        int count = 0;
+        int originalN = n; // Save the original value of n
+
+        while (n != 1) {
+            if (n % 2 == 0) {
+                n = n / 2;
+                count++;
+            } else {
+                n = 3 * n + 1;
+            }
         }
-        else
-        {
-            n = 3 * n + 1;
-        }
+
+        counts.push_back(count);
+
+        // Change n for the next iteration
+        n = (originalN / count) ;
+
+        iterations++;
     }
 
-    return count;
+    return counts;
 }
 
-void write_binary_file(const std::string& filename, int number)
-{
+void write_binary_file(const std::string& filename, const std::vector<int>& numbers) {
     std::ofstream file(filename, std::ios::binary);
 
-    // Convert the integer to its binary representation as a string
-    std::bitset<32> binaryRepresentation(number);
-    std::string binaryString = binaryRepresentation.to_string();
+    for (int number : numbers) {
+        // Convert each number to its binary representation as a string
+        std::bitset<32> binaryRepresentation(number);
+        std::string binaryString = binaryRepresentation.to_string();
 
-    // Write the binary string to the file
-    file.write(binaryString.c_str(), binaryString.size());
+        // Write the binary string to the file
+        file.write(binaryString.c_str(), binaryString.size());
+        file.put('\n');
+    }
 
     file.close();
 }
 
-int main()
-{
+int main() {
     int cursor = get_mouse_pos();
 
     auto currentTimePoint = system_clock::now();
@@ -64,14 +69,12 @@ int main()
 
     std::cout << "Seed: " << seed << std::endl;
 
-    // Use Collatz as a PRNG and get the random number
-    int randomNumber = collatz_prng(seed);
+    // Use Collatz as a PRNG and get the random numbers
+    std::vector<int> randomNumbers = collatz_prng(seed, 1);
 
-    std::cout << "Random Number: " << randomNumber << std::endl;
-
-    // Write the random number to a binary file
+    // Write the random numbers to a binary file
     std::string filename = "random_binary_file.bin";
-    write_binary_file(filename, randomNumber);
+    write_binary_file(filename, randomNumbers);
 
     std::cout << "Random binary file created: " << filename << std::endl;
 
