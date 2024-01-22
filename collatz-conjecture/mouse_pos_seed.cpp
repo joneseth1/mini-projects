@@ -8,13 +8,15 @@
 using namespace std::chrono;
 
 int get_mouse_pos() {
-    while (true) {
-        POINT p;
-        if (GetCursorPos(&p)) {
-            return p.x;
-        }
+    POINT p;
+    if (GetCursorPos(&p)) {
+        return p.x;
+    } else {
+        return -1;
     }
 }
+
+
 std::vector<int> collatz_prng(int n, int i) {
     std::vector<int> counts;
     int iterations = 0;
@@ -34,8 +36,12 @@ std::vector<int> collatz_prng(int n, int i) {
 
         counts.push_back(count);
 
+        auto currentTimePoint = system_clock::now();
+        auto currentTimeInMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(currentTimePoint.time_since_epoch()).count();
+
+
         // Change n for the next iteration
-        n = (originalN / count) ;
+        n = (originalN * currentTimeInMilliseconds) ;
 
         iterations++;
     }
@@ -53,7 +59,8 @@ void write_binary_file(const std::string& filename, const std::vector<int>& numb
 
         // Write the binary string to the file
         file.write(binaryString.c_str(), binaryString.size());
-        file.put('\n');
+        std::cout << "Writing to file... " << std::endl;
+        // file.put('\n');
     }
 
     file.close();
@@ -70,7 +77,7 @@ int main() {
     std::cout << "Seed: " << seed << std::endl;
 
     // Use Collatz as a PRNG and get the random numbers
-    std::vector<int> randomNumbers = collatz_prng(seed, 1);
+    std::vector<int> randomNumbers = collatz_prng(seed, 10);
 
     // Write the random numbers to a binary file
     std::string filename = "random_binary_file.bin";
