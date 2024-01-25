@@ -1,3 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.DepndencyInjection;
+using Microsoft.Extensions.Hosting;
 
-using namespace TradingEngineServer.Core;
+
+using TradingEngineServer.Core;
