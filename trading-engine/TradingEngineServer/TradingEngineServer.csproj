@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <LangVersion>9</LangVersion>
+	  <RootNamespace>TradingEngineServer.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>
