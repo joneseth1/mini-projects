@@ -9,7 +9,7 @@ long long largestPrimeFactor(long long n) {
         n /= 2;
     }
 
-    // Now n must be odd
+    // n must be odd
     // Start checking odd factors from 3
     for (long long i = 3; i * i <= n; i += 2) {
         while (n % i == 0) {
