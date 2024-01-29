@@ -1,9 +1,7 @@
-# Titanic script
-using DecisionTree, ScikitLearn.CrossValidation, DataFrames, CSV, Plots
+using DecisionTree, ScikitLearn.CrossValidation, DataFrames, CSV, Random, Statistics
 
 # Turn CSV => DataFrame
 train_df = CSV.read("data/train.csv", DataFrame)
-
 
 # Drop missing values and replace missing Ages with the median
 train_df = dropmissing(train_df, "Embarked")
@@ -22,9 +20,9 @@ y = train_df[:, "Survived"]
 X = Matrix(train_df[:, Not(["Survived"])])
 
 # Train a Random Forest classifier and print accuracy
-model = RandomForestClassifier(n_trees=100)
-fit!(model, X, y)
-accuracy = minimum(cross_val_score(model, X, y, cv=5))
+model = RandomForestClassifier(n_trees=100, min_samples_split=10, max_depth=10)
+kf = KFold(size(X, 1), n_folds=5, shuffle=true, random_state=42)
+accuracy = cross_val_score(model, X, y, cv=kf)
 
-println("Accuracy: $accuracy")
+println("Mean Accuracy: $(mean(accuracy))")
 
