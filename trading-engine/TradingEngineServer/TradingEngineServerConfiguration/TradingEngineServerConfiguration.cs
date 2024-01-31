@@ -13,6 +13,6 @@ namespace TradingEngineServer.Core.Configuration
 
     class TradingEngineServerSettings
     {
-        public int port { get; set;}
+        public int Port { get; set;}
     }
 }

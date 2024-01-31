@@ -8,7 +8,7 @@ using TradingEngineServer.Core.Configuration;
 
 namespace TradingEngineServer.Core
 {
-    sealed class TradingEngineServer : BackgroundService, ITradingEngineServer
+    class TradingEngineServer : BackgroundService, ITradingEngineServer
     {
         private readonly ILogger<TradingEngineServer> _logger;
         private readonly TradingEngineServerConfiguration _tradingEngineServerConfig;
@@ -22,10 +22,12 @@ namespace TradingEngineServer.Core
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while(!stoppingToken.IsCancellationRequested)
+            _logger.LogInformation($"Started {nameof(TradingEngineServer)}");
+            while (!stoppingToken.IsCancellationRequested)
             {
 
             }
+            _logger.LogInformation($"Stopped {nameof(TradingEngineServer)}");
             return Task.CompletedTask;
         }
     }
