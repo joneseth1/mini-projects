@@ -1,8 +1,8 @@
 echo "Building..."
 #build
-g++ -o /c/programs/random-fun/mini-projects/puzzels/project_euler/largest_palidrome_product /c/programs/random-fun/mini-projects/puzzels/project_euler/largest_palidrome_product.cpp
+g++ -o /c/programs/random-fun/mini-projects/puzzels/project_euler/smallest_multiple /c/programs/random-fun/mini-projects/puzzels/project_euler/smallest_multiple.cpp
 echo "Done Build and running"
 
 
 #run
-/c/programs/random-fun/mini-projects/puzzels/project_euler/largest_palidrome_product
+/c/programs/random-fun/mini-projects/puzzels/project_euler/smallest_multiple
