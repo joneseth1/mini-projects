@@ -26,7 +26,7 @@ int smallestDivisible(int n) {
 
 int main() {
     int n = 19;
-    std::cout << "The smallest positive number evenly divisible by all numbers from 1 to " << n << " is: ";
+    std::cout << "The smallest positive number evenly divisible by all numbers from 1 to 20" << " is: ";
     std::cout << smallestDivisible(n) << std::endl;
     return 0;
 }
