@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TradingEngineServer.Logging.LoggingConfig
 {
-    public class LoggingConfig
+    public class LoggerConfig
     {
         public LoggerType LoggerType { get; set; }
         public TextLoggerConfig TextLoggerConfig { get; set; }
