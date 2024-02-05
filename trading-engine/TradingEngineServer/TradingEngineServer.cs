@@ -5,16 +5,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TradingEngineServer.Core.Configuration;
+using TradingEngineServer.Logging;
 
 namespace TradingEngineServer.Core
 {
     class TradingEngineServer : BackgroundService, ITradingEngineServer
     {
-        private readonly ILogger<TradingEngineServer> _logger;
+        private readonly ITextLogger _logger;
         private readonly TradingEngineServerConfiguration _tradingEngineServerConfig;
-        public TradingEngineServer(ILogger<TradingEngineServer> logger, IOptions<TradingEngineServerConfiguration> config)
+        public TradingEngineServer(ITextLogger textLogger, 
+            IOptions<TradingEngineServerConfiguration> config)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = textLogger ?? throw new ArgumentNullException(nameof(textLogger));
             _tradingEngineServerConfig = config.Value ?? throw new ArgumentNullException(nameof(config));
         }
 
