@@ -11,13 +11,14 @@ namespace TradingEngineServer.Core
      public sealed class TradingEngineServerHostBuilder
     {
         public static IHost BuildTradingEngineServer()
-            => Host.CreateDefaultBuilder().ConfigureServices((context, services) =>
+            => Host.CreateDefaultBuilder().ConfigureServices((context, services) 
+                =>
             {
                 services.AddOptions();
                 services.Configure<TradingEngineServerConfiguration>(context.Configuration.GetSection(nameof(TradingEngineServerConfiguration)));
 
                 services.AddSingleton<ITradingEngineServer, TradingEngineServer>();
-                services.AddSingleton<ITextLogger, >();
+                services.AddSingleton<ITextLogger, TextLogger>();
 
                 services.AddHostedService<TradingEngineServer>();
             }).Build();
