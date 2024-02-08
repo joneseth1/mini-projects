@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks.Dataflow;
@@ -16,6 +17,14 @@ namespace TradingEngineServer.Logging
         {
             _loggingConfig = loggingConfig.Value ?? throw new ArgumentNullException(nameof(loggingConfig));
         }
+
+        private static void LogAsync(string filepath, BufferBlock<LogInformation> logQueue, CancellationToken toekn)
+        {
+            using var fs = new FileStream(filepath, FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+            using var writer = new StreamWriter(fs, Encoding.UTF8);
+
+        }
+
         protected override void Log(LogLevel loglevel, string module, string message)
         {
             _logQueue.Post(new LogInformation(loglevel,module,message,DateTime.Now, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name));
