@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Extensions.Options;
 using TradingEngineServer.Logging.LoggingConfig;
@@ -15,22 +16,48 @@ namespace TradingEngineServer.Logging
         private readonly LoggerConfig _loggingConfig;
         public TextLogger(IOptions<LoggerConfig> loggingConfig) : base()
         {
+            var now = DateTime.Now;
             _loggingConfig = loggingConfig.Value ?? throw new ArgumentNullException(nameof(loggingConfig));
+            
+            string logDir = Path.Combine(_loggingConfig.TextLoggerConfig.Directory, $"{now:yyyy-mm-dd}");
+            string baseLogName = Path.Combine(_loggingConfig.TextLoggerConfig.FileName, _loggingConfig.TextLoggerConfig.FileExtension);
+            string filepath = Path.Combine(logDir,baseLogName);
+
+            _ = Task.Run(() => LogAsync(filepath, _logQueue, _tokenSource.Token));
         }
 
-        private static void LogAsync(string filepath, BufferBlock<LogInformation> logQueue, CancellationToken toekn)
+        private static async Task LogAsync(string filepath, BufferBlock<LogInformation> logQueue, CancellationToken token)
         {
             using var fs = new FileStream(filepath, FileMode.CreateNew, FileAccess.Write, FileShare.Read);
             using var writer = new StreamWriter(fs, Encoding.UTF8);
+            try
+            {
+                while (true)
+                {
+                    var logItem = await logQueue.ReceiveAsync(token).ConfigureAwait(false);
+                    string formattedMesg = FormatLogItem(logItem);
+                        await writer.WriteAsync(formattedMesg).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
 
+        private static string FormatLogItem(LogInformation logItem)
+        {
+            return $"[{logItem.Now:yyyy-MM-dd HH-mm-ss.ffffff}] [{logItem.ThreadName, -30}:{logItem.ThreadId:000}] " +
+                $"[{logItem.loglevel}] {logItem.Message}";
         }
 
         protected override void Log(LogLevel loglevel, string module, string message)
         {
             _logQueue.Post(new LogInformation(loglevel,module,message,DateTime.Now, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name));
         }
+
         public void Dispose() => throw new NotImplementedException();
 
         private readonly BufferBlock<LogInformation> _logQueue = new BufferBlock<LogInformation>();
+        private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
     }
 }
