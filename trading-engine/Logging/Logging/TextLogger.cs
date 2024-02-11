@@ -58,9 +58,38 @@ namespace TradingEngineServer.Logging
             _logQueue.Post(new LogInformation(loglevel,module,message,DateTime.Now, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name));
         }
 
-        public void Dispose() => throw new NotImplementedException();
+        ~TextLogger()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            lock(_lock)
+            {
+                if(_disposed)
+                    return;
+                _disposed = true;
+            }
+
+            if (disposing)
+            {
+                _tokenSource.Cancel();
+                _tokenSource.Dispose();
+            }
+
+        }
 
         private readonly BufferBlock<LogInformation> _logQueue = new BufferBlock<LogInformation>();
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        private readonly object _lock = new object();
+        private bool _disposed = false;
+
     }
 }
