@@ -13,4 +13,8 @@
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="8.0.0" />
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
+</Project> 

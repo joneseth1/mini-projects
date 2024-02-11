@@ -23,7 +23,10 @@ namespace TradingEngineServer.Logging
 
             
             string logDir = Path.Combine(_loggingConfig.TextLoggerConfig.Directory, $"{now:yyyy-mm-dd}");
-            string baseLogName = Path.Combine(_loggingConfig.TextLoggerConfig.FileName, _loggingConfig.TextLoggerConfig.FileExtension);
+            Directory.CreateDirectory(logDir);
+
+            string baseLogName = Path.Combine($"{_loggingConfig.TextLoggerConfig.FileName}-{now:HH_mm_ss}",
+                _loggingConfig.TextLoggerConfig.FileExtension);
             string filepath = Path.Combine(logDir,baseLogName);
 
             _ = Task.Run(() => LogAsync(filepath, _logQueue, _tokenSource.Token));
@@ -43,8 +46,7 @@ namespace TradingEngineServer.Logging
                 }
             }
             catch (OperationCanceledException)
-            {
-            }
+            { }
         }
 
         private static string FormatLogItem(LogInformation logItem)
