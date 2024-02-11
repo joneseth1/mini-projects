@@ -18,6 +18,9 @@ namespace TradingEngineServer.Logging
         {
             var now = DateTime.Now;
             _loggingConfig = loggingConfig.Value ?? throw new ArgumentNullException(nameof(loggingConfig));
+            if(_loggingConfig.LoggerType != LoggerType.Text)
+                throw new InvalidOperationException($"{ nameof(TextLogger)} does not much the logger type. ");
+
             
             string logDir = Path.Combine(_loggingConfig.TextLoggerConfig.Directory, $"{now:yyyy-mm-dd}");
             string baseLogName = Path.Combine(_loggingConfig.TextLoggerConfig.FileName, _loggingConfig.TextLoggerConfig.FileExtension);
