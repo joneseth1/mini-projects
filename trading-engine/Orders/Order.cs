@@ -22,6 +22,12 @@ namespace TradingEngineServer.Orders
         public uint CurrentQuantity { get; private set; }
         public bool IsBuySide { get; private set;}
 
+        public long OrderId => _orderCore.OrderId;
+
+        public string Username => _orderCore.Username;
+
+        public int SecurityId => _orderCore.SecurityId;
+
         public void IncreaseQuantity(uint quantityDelta)
         {
             if(quantityDelta > CurrentQuantity)
