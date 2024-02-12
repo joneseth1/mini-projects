@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingEngineServer", "TradingEngineServer.csproj", "{1A131774-6C84-4807-A141-FF17ED46621C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "..\Logging\Logging\Logging.csproj", "{6F608E7D-F852-4BA3-9549-CBA8F767F418}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "..\Logging\Logging\Logging.csproj", "{6F608E7D-F852-4BA3-9549-CBA8F767F418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrument", "..\Instrument\Instrument.csproj", "{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6F608E7D-F852-4BA3-9549-CBA8F767F418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F608E7D-F852-4BA3-9549-CBA8F767F418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F608E7D-F852-4BA3-9549-CBA8F767F418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
