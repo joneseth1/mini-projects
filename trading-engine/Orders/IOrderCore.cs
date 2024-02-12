@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TradingEgnineServer.Orders
+namespace TradingEngineServer.Orders
 {
     public interface IOrderCore
     {

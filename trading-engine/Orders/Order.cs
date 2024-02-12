@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TradingEgnineServer.Orders;
 
 namespace TradingEngineServer.Orders
 {
@@ -30,12 +29,12 @@ namespace TradingEngineServer.Orders
 
         public void IncreaseQuantity(uint quantityDelta)
         {
-            if(quantityDelta > CurrentQuantity)
-                throw new InvalidOperationException($"Underflow for OrderId={OrderId}");
             CurrentQuantity += quantityDelta;
         }
         public void DecreaseQuantity(uint quantityDelta)
         {
+            if(quantityDelta > CurrentQuantity)
+                throw new InvalidOperationException($"Underflow for OrderId={OrderId}");
             CurrentQuantity -= quantityDelta;
         }
 
