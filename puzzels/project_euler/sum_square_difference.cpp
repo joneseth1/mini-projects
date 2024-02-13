@@ -3,7 +3,7 @@
 
 
 
-void sum_squares(int n)
+int sum_squares(int n)
 {
 	int sum = 0;
 
@@ -13,12 +13,18 @@ void sum_squares(int n)
 	}
 
 
-	std::cout << sum << std::endl;
+	return sum;
 }
 
-void square_sum(int n)
+int square_sum(int n)
 {
 	int sum = 0;
+	for (int i = 0; i <= n; i++)
+	{
+		sum += i;
+	}
+
+	return pow(sum,2);
 }
 
 
@@ -27,5 +33,9 @@ int main()
 {
 	// what the sum should sum too 
 	int n = 100; 
-	sum_squares(n);
+	int sum_square = sum_squares(n);
+	int square_sums = square_sum(n);
+
+	std::cout << square_sums - sum_square << std::endl;
+	return 0;
 }
