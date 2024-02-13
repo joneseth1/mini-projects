@@ -16,7 +16,10 @@ void sum_squares(int n)
 	std::cout << sum << std::endl;
 }
 
-
+void square_sum(int n)
+{
+	int sum = 0;
+}
 
 
 
