@@ -31,7 +31,6 @@ int square_sum(int n)
 
 int main()
 {
-	// what the sum should sum too 
 	int n = 100; 
 	int sum_square = sum_squares(n);
 	int square_sums = square_sum(n);
