@@ -4,12 +4,7 @@ using System.Text;
 
 namespace TradingEngineServer.Orders
 {
-    class Limit
-    {
-
-    }
-
-    class OrderbookEntry
+    public class OrderbookEntry
     {
         public OrderbookEntry(Order currentOrder, Limit parentLimit)
         {
