@@ -19,7 +19,7 @@ namespace TradingEngineServer.Orders
                 if (head.CurrentOrder.CurrentQuantity != 0)
                     orderCount++;
                 head = head.Next;
-            }
+            } 
             return orderCount;
         }
 
@@ -34,6 +34,7 @@ namespace TradingEngineServer.Orders
             }
             return quantity;
         }
+
 
         public bool IsEmpty
         {
