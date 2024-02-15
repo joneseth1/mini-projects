@@ -1,13 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <filesystem> // Include the filesystem library for path handling
 
 std::vector<int> NUMBERS;
 
 int main() {
-    std::string filePath = "C:\\programs\\random-fun\\mini-projects\\puzzels\\project_euler\\largest_product_in_a_series\\digit.txt";
-    std::cout << "File path: " << filePath << std::endl; // Print the file path
+    std::string filePath = "digit.txt";
     
     std::ifstream inputFile(filePath);
 
@@ -15,16 +13,15 @@ int main() {
         std::cerr << "ERROR opening the file" << std::endl;
         return 1;
     } else { 
-        int num; 
-        while (inputFile >> num) {
-            NUMBERS.push_back(num);
-            std::cout << "YES" << std::endl;
+        char digit; 
+        while (inputFile.get(digit)) { // Read characters one by one
+            if (isdigit(digit)) {
+                int num = digit - '0'; // Convert char to int
+                NUMBERS.push_back(num);
+                std::cout << "YES" << std::endl;
+            }
         }
         inputFile.close();
-    }
-
-    for (int i = 0; i < NUMBERS.size(); ++i) {
-        std::cout << NUMBERS[i] << std::endl;
     }
 
     return 0;
