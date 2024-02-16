@@ -25,7 +25,7 @@ long long findLargestProduct(const std::vector<int>& numbers) {
 
 
 
-// New implementation 
+
 std::vector<int> readNumbersFromFile(const std::string& filePath) {
     std::ifstream inputFile(filePath);
     std::vector<int> numbers;
@@ -58,14 +58,6 @@ long long findLargestProduct(const std::vector<int>& numbers) {
     }
     return maxProduct;
 }
-
-
-
-
-
-
-
-
 
 
 
