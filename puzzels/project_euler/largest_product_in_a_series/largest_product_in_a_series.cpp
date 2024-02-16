@@ -7,28 +7,22 @@ std::vector<int> NUMBERS;
 
 
 
+long long findLargestProduct(const std::vector<int>& numbers) {
+    long long maxProduct = 0;
 
+    for (size_t i = 0; i < numbers.size() - 12; ++i) {
+        long long product = 1;
+        for (int j = 0; j < 13; ++j) {
+            product *= numbers[i + j];
+        }
+        if (product > maxProduct) {
+            maxProduct = product;
+        }
+    }
 
-void findLargestProduct(std::vector<int> numbers) {
-
-	std::vector<int> lucky13; 
-	int j = 0; 
-	for (int i = 0; i < numbers.size(); ++i) {
-		if (j <= 13) {
-			lucky13.push_back(i);
-			j++; 
-		} else {
-			for (int num : lucky13) {
-				if (i > num) {
-					lucky13.push_back(i);
-				}
-			}
-		} 
-	}
-	for (int num : lucky13) {
-		std::cout << num << std::endl; 
-	}
+    return maxProduct;
 }
+
 
 
 
@@ -52,9 +46,9 @@ int main() {
         inputFile.close();
     }
 
-    // int maxProduct = findLargestProduct(NUMBERS);
-    // std::cout << "Max is: " << maxProduct << std::endl;
-
+    long long maxProduct = findLargestProduct(NUMBERS);
+    std::cout << "Max product of 13 consecutive numbers is: " << maxProduct << std::endl;
 
     return 0;
 }
+
