@@ -4,6 +4,35 @@
 
 std::vector<int> NUMBERS;
 
+
+
+
+
+
+void findLargestProduct(std::vector<int> numbers) {
+
+	std::vector<int> lucky13; 
+	int j = 0; 
+	for (int i = 0; i < numbers.size(); ++i) {
+		if (j <= 13) {
+			lucky13.push_back(i);
+			j++; 
+		} else {
+			for (int num : lucky13) {
+				if (i > num) {
+					lucky13.push_back(i);
+				}
+			}
+		} 
+	}
+	for (int num : lucky13) {
+		std::cout << num << std::endl; 
+	}
+}
+
+
+
+
 int main() {
     std::string filePath = "digit.txt";
     
@@ -18,11 +47,14 @@ int main() {
             if (isdigit(digit)) {
                 int num = digit - '0'; // Convert char to int
                 NUMBERS.push_back(num);
-                std::cout << "YES" << std::endl;
             }
         }
         inputFile.close();
     }
+
+    // int maxProduct = findLargestProduct(NUMBERS);
+    // std::cout << "Max is: " << maxProduct << std::endl;
+
 
     return 0;
 }
