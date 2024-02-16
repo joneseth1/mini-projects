@@ -25,6 +25,49 @@ long long findLargestProduct(const std::vector<int>& numbers) {
 
 
 
+// New implementation 
+std::vector<int> readNumbersFromFile(const std::string& filePath) {
+    std::ifstream inputFile(filePath);
+    std::vector<int> numbers;
+    if (!inputFile.is_open()) {
+        std::cerr << "ERROR opening the file" << std::endl;
+        return numbers;
+    } else {
+        char digit;
+        while (inputFile.get(digit)) {
+            if (isdigit(digit)) {
+                int num = digit - '0';
+                numbers.push_back(num);
+            }
+        }
+        inputFile.close();
+    }
+    return numbers;
+}
+
+long long findLargestProduct(const std::vector<int>& numbers) {
+    long long maxProduct = 0;
+    long long currentProduct = 1;
+    for (size_t i = 0; i < 13; ++i) {
+        currentProduct *= numbers[i];
+    }
+    maxProduct = currentProduct;
+    for (size_t i = 13; i < numbers.size(); ++i) {
+        currentProduct = (currentProduct / numbers[i - 13]) * numbers[i];
+        maxProduct = std::max(maxProduct, currentProduct);
+    }
+    return maxProduct;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 int main() {
