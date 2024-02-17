@@ -16,10 +16,12 @@ namespace TradingEngineServer.Orders
             _orderCore = orderCore;
         }
 
-        public Order(ModifyOrder modifyOrder) : this(modifyOrder, modifyOrder.Price, modifyOrder.Quantity, modifyOrder.IsBuySide)
+        public Order(ModifyOrder modifyOrder) : 
+            this(modifyOrder, modifyOrder.ModifyPrice, modifyOrder.ModifyQuantity, modifyOrder.IsBuySide)
         {
 
         }
+
         
         public long Price { get; private set; }
         public uint InitialQuantity { get; private set;}

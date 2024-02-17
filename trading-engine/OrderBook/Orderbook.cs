@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TradingEngineServer.Instrument;
 using TradingEngineServer.Orders;
@@ -55,14 +56,103 @@ namespace TradingEngineServer.Orderbook
             }
         }
 
-        public void ChangeOrder(ModifyOrder modifyOrder) => throw new NotImplementedException();
+        public void ChangeOrder(ModifyOrder modifyOrder)
+        {
+            if(_orders.TryGetValue(modifyOrder.OrderId, out OrderbookEntry orderbookEntry))
+            {
+                RemoveOrder(modifyOrder.ToCancelOrder());
+                AddOrder(modifyOrder.ToNewOrder(), orderbookEntry.ParentLimit, modifyOrder.IsBuySide ? _bidLimits : _askLimits, _orders);
+            }
+        }
         public bool ContainsOrder(long orderId)
         {
             return _orders.ContainsKey(orderId);
         }
-        public List<OrderbookEntry> GetAskOrders() => throw new NotImplementedException();
-        public List<OrderbookEntry> GetBidOrders() => throw new NotImplementedException();
-        public OrderbookSpread GetSpread() => throw new NotImplementedException();
-        public void RemoveOrder(CancelOrder cancelOrder) => throw new NotImplementedException();
+        public List<OrderbookEntry> GetAskOrders()
+        {
+            List<OrderbookEntry> orderbookEntries = new List<OrderbookEntry>();
+            foreach (var askLimits in _askLimits)
+            {
+                if(askLimits.IsEmpty)
+                    continue;
+                else
+                {
+                    OrderbookEntry askLimitPointer = askLimits.Head;
+                    while (askLimitPointer != null)
+                    {
+                        orderbookEntries.Add(askLimitPointer);
+                        askLimitPointer = askLimitPointer.Next;
+                    }
+                }
+            }
+            return orderbookEntries;
+        }
+        public List<OrderbookEntry> GetBidOrders()
+        {
+            List<OrderbookEntry> orderbookEntries = new List<OrderbookEntry>();
+            foreach(var bidLimits in _bidLimits)
+            {
+                if(bidLimits.IsEmpty)
+                    continue;
+                else
+                {
+                    OrderbookEntry bidLimitPointer = bidLimits.Head;
+                    while(bidLimitPointer != null)
+                    {
+                        orderbookEntries.Add(bidLimitPointer);
+                        bidLimitPointer = bidLimitPointer.Next;
+                    }
+                }
+            }
+            return orderbookEntries;
+        }
+
+        public OrderbookSpread GetSpread()
+        {
+            long ? bestAsk = null, bestBid = null;
+            if(_askLimits.Any() && !_askLimits.Min.IsEmpty)
+                bestAsk = _askLimits.Min.Price;
+            if(_bidLimits.Any() && !_bidLimits.Max.IsEmpty)
+                bestBid = _bidLimits.Max.Price;
+            return new OrderbookSpread(bestAsk, bestBid);
+        }
+        public void RemoveOrder(CancelOrder cancelOrder)
+        {
+            if(_orders.TryGetValue(cancelOrder.OrderId, out var orderbookEntry))
+            {
+                RemoveOrder(cancelOrder.OrderId, orderbookEntry, _orders);
+            }
+        }
+
+        private static void RemoveOrder(long orderId, OrderbookEntry orderbookEntry, Dictionary<long, OrderbookEntry> internalBook)
+        {
+            if (orderbookEntry.Previous != null && orderbookEntry.Next != null)
+            {
+                orderbookEntry.Next.Previous = orderbookEntry.Previous;
+                orderbookEntry.Previous.Next = orderbookEntry.Next;
+            }
+            else if (orderbookEntry.Previous != null)
+            {
+                orderbookEntry.Previous.Next = null;
+            }
+            else if (orderbookEntry.Next != null)
+            {
+                orderbookEntry.Next.Previous = null;
+            }
+            if ( orderbookEntry.ParentLimit.Head == orderbookEntry && orderbookEntry.ParentLimit.Tail == orderbookEntry)
+            {
+                orderbookEntry.ParentLimit.Head = null;
+                orderbookEntry.ParentLimit.Tail = null;
+            }
+            else if (orderbookEntry.ParentLimit.Head == orderbookEntry)
+            {
+                orderbookEntry.ParentLimit.Head = orderbookEntry.Next;
+            }
+            else if (orderbookEntry.ParentLimit.Tail == orderbookEntry)
+            {
+                orderbookEntry.ParentLimit.Tail = orderbookEntry.Previous;
+            }
+            internalBook.Remove(orderId);
+        }
     }
 }
