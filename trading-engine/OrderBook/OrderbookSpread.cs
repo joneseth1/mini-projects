@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TradingEngineServer.Orderbook
 {
-    class OrderbookSpread
+    public class OrderbookSpread
     {
         public OrderbookSpread(long? bid, long? ask)
         {
