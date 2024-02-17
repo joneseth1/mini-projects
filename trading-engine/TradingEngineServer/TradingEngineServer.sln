@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingEngineServer", "Trad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "..\Logging\Logging\Logging.csproj", "{6F608E7D-F852-4BA3-9549-CBA8F767F418}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrument", "..\Instrument\Instrument.csproj", "{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Instrument", "..\Instrument\Instrument.csproj", "{35A68ACD-8B15-4DD3-A0FB-22DDDAA21515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders", "..\Orders\Orders.csproj", "{AC9AEAE4-D187-422A-AA84-0960B06EA3FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "..\Orders\Orders.csproj", "{AC9AEAE4-D187-422A-AA84-0960B06EA3FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBook", "..\OrderBook\OrderBook.csproj", "{8E92D5E8-22E5-45E4-812E-ADB83A9BC0F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AC9AEAE4-D187-422A-AA84-0960B06EA3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9AEAE4-D187-422A-AA84-0960B06EA3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC9AEAE4-D187-422A-AA84-0960B06EA3FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E92D5E8-22E5-45E4-812E-ADB83A9BC0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E92D5E8-22E5-45E4-812E-ADB83A9BC0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E92D5E8-22E5-45E4-812E-ADB83A9BC0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E92D5E8-22E5-45E4-812E-ADB83A9BC0F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
