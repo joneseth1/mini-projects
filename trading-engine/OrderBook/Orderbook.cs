@@ -41,7 +41,7 @@ namespace TradingEngineServer.Orderbook
                     OrderbookEntry tailPointer = limit.Tail;
                     tailPointer.Next = orderbookEntry;
                     orderbookEntry.Previous = tailPointer;
-                    limit.Tail = OrderbookEntry;
+                    limit.Tail = orderbookEntry;
                 }
 
             }
