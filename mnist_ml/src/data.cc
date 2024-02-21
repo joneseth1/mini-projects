@@ -39,3 +39,5 @@ std::vector<uint8_t> * data::get_feature_vector()
 {
     return feature_vector;
 }
+
+

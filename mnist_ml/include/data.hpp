@@ -2,7 +2,6 @@
 #define __DATA_H
 
 
-
 #include <vector>
 #include "stdint.h"
 #include "stdio.h"
