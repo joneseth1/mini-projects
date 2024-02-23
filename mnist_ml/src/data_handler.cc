@@ -30,7 +30,7 @@ void data_handler::read_feature_vector(std::string path)
             }
 
         }
-        printf("Done grabbing file header. \n");
+        printf("Done grabbing input file header. \n");
         int image_size = head[2]*head[3];
         for (int i = 0; i < head[1]; i++)
         {
@@ -53,6 +53,46 @@ void data_handler::read_feature_vector(std::string path)
         printf("Could not find file.\n");
         exit(1);
     }
+}
+
+void data_handler::read_feature_labels(std::string path)
+{
+    uint32_t head[2]; 
+    unsigned char bytes[2];
+    FILE *f = fopen(path.c_str(), "r");
+    if(f)
+    {
+        for(int i = 0; i < 2; i++)
+        {
+            if(fread(bytes, sizeof(bytes), 1, f))
+            {
+                head[i] = convert_to_little_endian(bytes);
+            }
+
+        }
+        printf("Done grabbing label file header. \n");
+        for (int i = 0; i < head[1]; i++)
+        {
+            data *d = new data();
+            uint8_t element[1];
+            for (int j = 0; j < image_size; j++)
+            {
+                if(fread(element, sizeof(element), 1, f))
+                {
+                    d->appended_to_feature_vector(element[0]);
+                }
+                printf("Error Reading from File . \n");
+                exit(1);
+            }
+            data_array->push_back(d);
+        }
+        printf("Read and stored %lu reafcture vectors.\n", data_array->size());
+    } else
+    {
+        printf("Could not find file.\n");
+        exit(1);
+    }
+
 }
 
 void read_feature_vector(std::string path);
