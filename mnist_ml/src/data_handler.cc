@@ -35,8 +35,23 @@ void data_handler::read_feature_vector(std::string path)
         for (int i = 0; i < head[1]; i++)
         {
             data *d = new data();
-
+            uint8_t element[1];
+            for (int j = 0; j < image_size; j++)
+            {
+                if(fread(element, sizeof(element), 1, f))
+                {
+                    d->appended_to_feature_vector(element[0]);
+                }
+                printf("Error Reading from File . \n");
+                exit(1);
+            }
+            data_array->push_back(d);
         }
+        printf("Read and stored %lu reafcture vectors.\n", data_array->size());
+    } else
+    {
+        printf("Could not find file.\n");
+        exit(1);
     }
 }
 
