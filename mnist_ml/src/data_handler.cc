@@ -71,29 +71,46 @@ void data_handler::read_feature_labels(std::string path)
 
         }
         printf("Done grabbing label file header. \n");
-        for (int i = 0; i < head[1]; i++)
+       for(int i = 0; i < head[1]; i++)
+       {
+        uint8_t element[1];
+        if(fread(element, sizeof(element), 1, f))
         {
-            data *d = new data();
-            uint8_t element[1];
-            for (int j = 0; j < image_size; j++)
+            data_array->at(i)->set_label(element[0]);
+        } else 
+        {
+            printf("Error reading from file. \n");
+            exit(1);
+        }  
+        printf("Read and sotred label.\n");
+    }
+    } else 
             {
-                if(fread(element, sizeof(element), 1, f))
-                {
-                    d->appended_to_feature_vector(element[0]);
-                }
-                printf("Error Reading from File . \n");
+                printf("Could not find file.\n");
                 exit(1);
             }
-            data_array->push_back(d);
-        }
-        printf("Read and stored %lu reafcture vectors.\n", data_array->size());
-    } else
-    {
-        printf("Could not find file.\n");
-        exit(1);
-    }
-
 }
+
+void data_handler::split_data()
+{
+    std::unordered_set<int> used_indexes;
+    int train_size = data_array->size() * TRAIN_SET_PERCENT;
+    int test_size =  data_array->size() * TEST_SET_PERCENT;
+    int validation_size = data_array->size() * VALIDATION_PERCENT;
+
+    int count = 0; 
+    while(count < train_size)
+    {
+        int rand_index = rand() % data_array->size();
+        if(used_indexes.find(rand_index) == used_indexes.end())
+        {
+            training_data->push_back(data_array->at(rand_index));
+            used_indexes.insert(rand_index);
+            count++;
+        }
+    }
+}
+
 
 void read_feature_vector(std::string path);
 void read_feature_labels(std::string path);
