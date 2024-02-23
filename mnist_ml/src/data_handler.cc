@@ -30,7 +30,13 @@ void data_handler::read_feature_vector(std::string path)
             }
 
         }
+        printf("Done grabbing file header. \n");
+        int image_size = head[2]*head[3];
+        for (int i = 0; i < head[1]; i++)
+        {
+            data *d = new data();
 
+        }
     }
 }
 
