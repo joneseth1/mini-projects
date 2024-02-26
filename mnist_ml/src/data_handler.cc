@@ -41,9 +41,11 @@ void data_handler::read_feature_vector(std::string path)
                 if(fread(element, sizeof(element), 1, f))
                 {
                     d->append_to_feature_vector(element[0]);
+                } else 
+                {
+                    printf("Error Reading from File for vectors. \n");
+                    exit(1);
                 }
-                printf("Error Reading from File for vectors. \n");
-                exit(1);
             }
             data_array->push_back(d);
         }
