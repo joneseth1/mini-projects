@@ -1,4 +1,4 @@
-#include "data_handler.hpp";
+#include "data_handler.hpp"
 
 
 data_handler::data_handler()
@@ -152,13 +152,39 @@ void data_handler::count_classes()
         }
     }
     num_classes = count; 
-    printf("Number of classes is: %lu\n", num_classes)
-
+    printf("Number of classes is: %d\n", num_classes);
 }
 
-uint32_t convert_to_little_endian(const unsigned char* bytes);
+uint32_t data_handler::convert_to_little_endian(const unsigned char* bytes)
+{
+    return (uint32_t) ((bytes[0] << 24) |
+                       (bytes[1] << 16) | 
+                       (bytes[2] << 8)  | 
+                       (bytes[3]));
+}
+
+std::vector<data *> * data_handler::get_training_data()
+{
+    return training_data;
+}
+std::vector<data *> * data_handler::get_test_data()
+{
+    return test_data;
+}
+std::vector<data *> * data_handler::get_validation_data()
+{
+    return validation_data;
+}
 
 
-std::vector<data *> * get_training_data();
-std::vector<data *> * get_test_data();
-std::vector<data *> * get_validation_data();
+
+int main() 
+{
+    data_handler *dh = new data_handler();
+    dh->read_feature_vector("./train-images-idx3-ubyte");
+    dh->read_feature_labels("./train-labels-idx1-ubyte");
+    dh->split_data();
+    dh->count_classes();
+
+    return 0;
+}
