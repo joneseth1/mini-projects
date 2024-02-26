@@ -109,6 +109,30 @@ void data_handler::split_data()
             count++;
         }
     }
+
+    count = 0; 
+    while(count < test_size)
+    {
+        int rand_index = rand() % data_array->size();
+        if(used_indexes.find(rand_index) == used_indexes.end())
+        {
+            test_data->push_back(data_array->at(rand_index));
+            used_indexes.insert(rand_index);
+            count++;
+        }
+    }
+
+    count = 0;
+    while(count < validation_size)
+    {
+        int rand_index = rand() % data_array->size();
+        if(used_indexes.find(rand_index) == used_indexes.end())
+        {
+            test_data->push_back(data_array->at(rand_index));
+            used_indexes.insert(rand_index);
+            count++;
+        }
+    }
 }
 
 
