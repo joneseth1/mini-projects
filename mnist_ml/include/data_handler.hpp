@@ -43,9 +43,6 @@ class data_handler
     std::vector<data *> * get_test_data();
     std::vector<data *> * get_validation_data();
 
-
-
-
 };
 
 

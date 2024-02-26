@@ -40,9 +40,9 @@ void data_handler::read_feature_vector(std::string path)
             {
                 if(fread(element, sizeof(element), 1, f))
                 {
-                    d->appended_to_feature_vector(element[0]);
+                    d->append_to_feature_vector(element[0]);
                 }
-                printf("Error Reading from File . \n");
+                printf("Error Reading from File for vectors. \n");
                 exit(1);
             }
             data_array->push_back(d);
@@ -79,7 +79,7 @@ void data_handler::read_feature_labels(std::string path)
             data_array->at(i)->set_label(element[0]);
         } else 
         {
-            printf("Error reading from file. \n");
+            printf("Error reading from file for labels. \n");
             exit(1);
         }  
         printf("Read and sotred label.\n");
