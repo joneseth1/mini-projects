@@ -133,13 +133,28 @@ void data_handler::split_data()
             count++;
         }
     }
+    printf("Training data_size: %lu. \n", training_data->size());
+    printf("Test data_size: %lu. \n", test_data->size());
+    printf("Validation data_size: %lu. \n", validation_data->size());
 }
 
+void data_handler::count_classes()
+{
+    int count = 0;
+     
+    for (unsigned i = 0; i < data_array->size(); i++)
+    {
+        if (class_map.find(data_array->at(i)->get_label()) == class_map.end())
+        {
+            class_map[data_array->at(i)->get_label()] = count;
+            data_array->at(i)->set_enumerated_label(count);
+            count++;
+        }
+    }
+    num_classes = count; 
+    printf("Number of classes is: %lu\n", num_classes)
 
-void read_feature_vector(std::string path);
-void read_feature_labels(std::string path);
-void split_data();
-void count_classes();
+}
 
 uint32_t convert_to_little_endian(const unsigned char* bytes);
 
