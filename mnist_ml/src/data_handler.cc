@@ -1,6 +1,5 @@
 #include "data_handler.hpp"
-#include <ctime>
-#include <cstdlib> 
+
 
 data_handler::data_handler()
 {
@@ -106,10 +105,8 @@ void data_handler::split_data()
     int validation_size = data_array->size() * VALIDATION_PERCENT;
 
     size_t count = 0; 
-    while(count < train_size)
+    while(count < 320)
     {
-
-        printf("%d\n", count);
         int rand_index = rand() % data_array->size();
         if(used_indexes.find(rand_index) == used_indexes.end())
         {
@@ -119,26 +116,21 @@ void data_handler::split_data()
         }
     }
 
-    count = 0; 
-    while(count < test_size)
+   size_t count_1 = 0; 
+    while(count_1 < test_size)
     {
-        printf("splitting test");
-
         int rand_index = rand() % data_array->size();
         if(used_indexes.find(rand_index) == used_indexes.end())
         {
             test_data->push_back(data_array->at(rand_index));
             used_indexes.insert(rand_index);
-            count++;
+            count_1++;
         }
     }
 
     count = 0;
     while(count < validation_size)
     {
-
-        printf("splitting val");
-
         int rand_index = rand() % data_array->size();
         if(used_indexes.find(rand_index) == used_indexes.end())
         {
@@ -194,7 +186,6 @@ std::vector<data *> * data_handler::get_validation_data()
 
 int main() 
 {
-    srand(time(nullptr));
     data_handler *dh = new data_handler();
     dh->read_feature_vector("./train-images-idx3-ubyte");
     dh->read_feature_labels("./train-labels-idx1-ubyte");
