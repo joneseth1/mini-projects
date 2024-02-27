@@ -1,5 +1,6 @@
 #include "data_handler.hpp"
-
+#include <ctime>
+#include <cstdlib> 
 
 data_handler::data_handler()
 {
@@ -104,7 +105,7 @@ void data_handler::split_data()
     int test_size =  data_array->size() * TEST_SET_PERCENT;
     int validation_size = data_array->size() * VALIDATION_PERCENT;
 
-    int count = 0; 
+    size_t count = 0; 
     while(count < train_size)
     {
 
@@ -117,8 +118,6 @@ void data_handler::split_data()
             count++;
         }
     }
-
-
 
     count = 0; 
     while(count < test_size)
@@ -195,6 +194,7 @@ std::vector<data *> * data_handler::get_validation_data()
 
 int main() 
 {
+    srand(time(nullptr));
     data_handler *dh = new data_handler();
     dh->read_feature_vector("./train-images-idx3-ubyte");
     dh->read_feature_labels("./train-labels-idx1-ubyte");
