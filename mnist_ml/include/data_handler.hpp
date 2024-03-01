@@ -45,5 +45,4 @@ class data_handler
 
 };
 
-
 #endif

@@ -98,8 +98,7 @@ void data_handler::split_data()
 
     printf("splitting train\n");
     printf("data size is %d\n", data_array->size());
-
-
+    
     int half_size = data_array->size() / 2;
     printf("We are halfing the size for times sake so the acutal size before splitting is: %d\n", half_size);
 
