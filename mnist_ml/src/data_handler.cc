@@ -96,16 +96,20 @@ void data_handler::read_feature_labels(std::string path)
 void data_handler::split_data()
 {
 
-    printf("splitting train");
-    printf("data size is %d", data_array->size());
+    printf("splitting train\n");
+    printf("data size is %d\n", data_array->size());
+
+
+    int half_size = data_array->size() / 2;
+    printf("We are halfing the size for times sake so the acutal size before splitting is: %d\n", half_size);
 
     std::unordered_set<int> used_indexes;
-    int train_size = data_array->size() * TRAIN_SET_PERCENT;
-    int test_size =  data_array->size() * TEST_SET_PERCENT;
-    int validation_size = data_array->size() * VALIDATION_PERCENT;
+    int train_size = half_size * TRAIN_SET_PERCENT;
+    int test_size =  half_size * TEST_SET_PERCENT;
+    int validation_size = half_size * VALIDATION_PERCENT;
 
     size_t count = 0; 
-    while(count < 320)
+    while(count < train_size)
     {
         int rand_index = rand() % data_array->size();
         if(used_indexes.find(rand_index) == used_indexes.end())
@@ -116,15 +120,15 @@ void data_handler::split_data()
         }
     }
 
-   size_t count_1 = 0; 
-    while(count_1 < test_size)
+    count = 0;
+    while(count < test_size)
     {
         int rand_index = rand() % data_array->size();
         if(used_indexes.find(rand_index) == used_indexes.end())
         {
             test_data->push_back(data_array->at(rand_index));
             used_indexes.insert(rand_index);
-            count_1++;
+            count++;
         }
     }
 
