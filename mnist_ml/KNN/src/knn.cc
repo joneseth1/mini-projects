@@ -22,7 +22,26 @@ knn::~knn()
     //default destructor  
 }
 
-void knn::find_knearest(data *query_point);
+void knn::find_knearest(data *query_point)
+{
+    neighbors = new std::vector<data *>;
+    double min = std::numeric_limits<double>::max();
+    double previous_min = min;
+    int index = 0;
+
+    for (int i = 0; i < k; i++)
+    {
+        if( i == 0)
+        {
+            for( int j = 0; j < training_data->size(); j++)
+            {
+                double distance = calc_distance(query_point, training_data->at(j));
+            }
+        }
+    }
+
+
+}
 
 void knn::set_training_data(std::vector<data *> *vect)
 {
@@ -49,6 +68,11 @@ int knn::predict();
 double knn::calc_distance(data* query_point, data* input)
 {
     double distance = 0.0;
+    if(query_point->get_feature_vector_size() != input->get_feature_vector_size())
+    {
+        printf("Error, the vectors are a mismatched size. \n");
+        exit(1); 
+    }
 #ifdef EUCLID
     for(unsigned i = 0; i < query_point->get_feature_vector(); i++)
     {
@@ -56,6 +80,8 @@ double knn::calc_distance(data* query_point, data* input)
     }
     distance = sqrt(distance);
 #elif defined MANHATTAN
+// TODO 
+#endif
 return distance;
 }
 
