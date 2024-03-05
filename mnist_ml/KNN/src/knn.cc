@@ -29,18 +29,41 @@ void knn::find_knearest(data *query_point)
     double previous_min = min;
     int index = 0;
 
+    
     for (int i = 0; i < k; i++)
     {
+        // Setting the min value on the first pass
         if( i == 0)
         {
             for( int j = 0; j < training_data->size(); j++)
             {
                 double distance = calc_distance(query_point, training_data->at(j));
+                training_data->at(j)->set_distance(distance);
+                if(distance < min)
+                {
+                    min = distance;
+                    index = j;
+                }
             }
+            neighbors->push_back(training_data->at(index));
+            previous_min = min;
+            min = std::numeric_limits<double>::max();
+        } else 
+        {
+            for(int j = 0; j < training_data->size(); j++)
+            {
+                double distance = calc_distance(query_point, training_data->at(j));
+                if(distance > previous_min && distance < min)
+                {
+                    min = distance;
+                    index = j;
+                }
+            }
+            neighbors->push_back(training_data->at(index));
+            previous_min = min; 
+            min = std::numeric_limits<double>::max();
         }
     }
-
-
 }
 
 void knn::set_training_data(std::vector<data *> *vect)
