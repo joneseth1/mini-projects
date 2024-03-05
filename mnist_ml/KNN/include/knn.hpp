@@ -1,35 +1,32 @@
-#ifndef __KNN_H
-#define __KNN_H
+#ifndef KNN_H
+#define KNN_H
 
+#include <memory>
 #include <vector>
 #include "data.hpp"
 
-
-class knn 
-{
+class KNN {
+private:
     int k;
-    std::vector<data *>  * neighbors; 
-    std::vector<data *>  * training_data;
-    std::vector<data *>  * test_data; 
-    std::vector<data *>  * validation_data; 
+    std::vector<std::unique_ptr<Data>> neighbors;
+    std::vector<std::unique_ptr<Data>> trainingData;
+    std::vector<std::unique_ptr<Data>> testData;
+    std::vector<std::unique_ptr<Data>> validationData;
 
-    public: 
-    knn(int);
-    knn();
-    ~knn();
+public:
+    KNN(int k = 3);
+    ~KNN();
 
-    void find_knearest(data *query_point);
-    void set_training_data(std::vector<data *> *vect);
-    void test_data(std::vector<data *> *vect);
-    void validation_data(std::vector<data *> *vect);
-    void set_k(int val);
+    void findKNearest(const Data& queryPoint);
+    void setTrainingData(const std::vector<std::unique_ptr<Data>>& data);
+    void setTestData(const std::vector<std::unique_ptr<Data>>& data);
+    void setValidationData(const std::vector<std::unique_ptr<Data>>& data);
+    void setK(int val);
 
     int predict();
-    double calc_distance(data* query_point, data* input);
-    double validate_performance();
-    double test_performance();
-
-
+    double calculateDistance(const Data& queryPoint, const Data& input) const;
+    double validatePerformance() const;
+    double testPerformance() const;
 };
 
-#endif 
+#endif
