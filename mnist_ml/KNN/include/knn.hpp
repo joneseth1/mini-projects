@@ -20,8 +20,8 @@ class knn
 
     void find_knearest(data *query_point);
     void set_training_data(std::vector<data *> *vect);
-    void test_data(std::vector<data *> *vect);
-    void validation_data(std::vector<data *> *vect);
+    void set_test_data(std::vector<data *> *vect);
+    void set_validation_data(std::vector<data *> *vect);
     void set_k(int val);
 
     int predict();

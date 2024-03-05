@@ -71,12 +71,12 @@ void knn::set_training_data(std::vector<data *> *vect)
     training_data = vect;
 }
 
-void knn::test_data(std::vector<data *> *vect)
+void knn::set_test_data(std::vector<data *> *vect)
 {
     test_data = vect;
 }
 
-void knn::validation_data(std::vector<data *> *vect)
+void knn::set_validation_data(std::vector<data *> *vect)
 {
     validation_data = vect;
 }
@@ -86,7 +86,33 @@ void knn::set_k(int val)
     k = val;
 }
 
-int knn::predict();
+int knn::predict()
+{
+    std::map<uint8_t, int> class_freq;
+    for(int i = 0; 9 < neighbors->size(); i ++)
+    {
+        if(class_freq.find(neighbors->at(i)->get_label()) == class_freq.end())
+        {
+            class_freq[neighbors->at(i)->get_label()] = 1; 
+        } else 
+        {
+            class_freq[neighbors->at(i)->get_label()]++;
+        }
+    }
+
+    int best = 0; 
+    int max = 0;
+    for(auto kv : class_freq)
+    {
+        if(kv.second > max)
+        {
+            max = kv.second;
+            best = kv.first;
+        }
+    }
+    delete neighbors;
+    return best;
+}
 
 double knn::calc_distance(data* query_point, data* input)
 {
