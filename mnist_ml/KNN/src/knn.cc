@@ -134,5 +134,26 @@ double knn::calc_distance(data* query_point, data* input)
 return distance;
 }
 
-double knn::validate_performance();
+double knn::validate_performance()
+{
+    double current_perfom = 0; 
+    int count = 0; 
+    int data_index = 0; 
+    
+    for(data *query_point : *validation_data)
+    {
+        find_knearest(query_point);
+        int prediction = predict();
+        if(prediction == query_point->get_label())
+        {
+            count++;
+            printf("Current Perfomance is: %.3f %%\n", ((double)count*100.0)/((double)data_index));
+        }
+    }
+    current_perfom = ((double)count*100.0)/((double)validation_data->size());
+    printf("Validation Perfomance is: %.3f %%\n", current_perfom);
+    return current_perfom
+    
+}
+
 double knn::test_performance();
