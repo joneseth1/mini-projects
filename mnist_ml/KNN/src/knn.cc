@@ -152,7 +152,7 @@ double knn::validate_performance()
     }
     current_perfom = ((double)count*100.0)/((double)validation_data->size());
     printf("Validation Performance for K = %d is: %.3f %%\n", k, current_perfom);
-    return current_perfom
+    return current_perfom;
     
 }
 
