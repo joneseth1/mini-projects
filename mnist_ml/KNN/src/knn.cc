@@ -172,3 +172,42 @@ double knn::test_performance()
     current_performance = ((double)count*100.0/((double)test_data->size()));
     printf("Test Performanc is: %3f %% \n", current_performance);
 }
+
+int main() 
+{
+    data_handler *dh = new data_handler();
+    dh->read_feature_vector("./train-images-idx3-ubyte");
+    dh->read_feature_labels("./train-labels-idx1-ubyte");
+    dh->split_data();
+    dh->count_classes();
+    knn *knearest = new knn();
+
+    knearest->set_training_data(dh->get_training_data());
+    knearest->set_test_data(dh->get_test_data());
+    knearest->set_validation_data(dh->get_validation_data());
+    double performance = 0;
+    double best_performance = 0; 
+    int best_k = 1;
+
+    for(int i = 0; i <= 4; i++)
+    {
+        if(i == 1)
+        {
+            knearest->set_k(i);
+            performance = knearest->validate_performance();
+            best_performance = performance
+        } else
+        {
+            knearest->set_k(i);
+            performance = knearest->validate_performance();
+            if(performance > best_performance)
+            {
+                best_performance = performance;
+                best_k = k;
+            }
+        }
+    }
+
+    knearest->set_k(best_k);
+    knearest->test_performance();
+}
