@@ -110,7 +110,7 @@ int knn::predict()
             best = kv.first;
         }
     }
-    neighbors->clear();
+    delete neighbors;
     return best;
 }
 
@@ -125,7 +125,7 @@ double knn::calc_distance(data* query_point, data* input)
 #ifdef EUCLID
     for(unsigned i = 0; i < query_point->get_feature_vector_size(); i++)
     {
-        distance = pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
+        distance += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
     }
     distance = sqrt(distance);
 #elif defined MANHATTAN
@@ -144,6 +144,7 @@ double knn::validate_performance()
     {
         find_knearest(query_point);
         int prediction = predict();
+        printf("%d -> %d \n", prediction, query_point->get_label());
         if(prediction == query_point->get_label())
         {
             count++;
@@ -167,7 +168,7 @@ double knn::test_performance()
         int prediction = predict();
         if(prediction == query_point->get_label())
         {
-            count ++;
+            count++;
         }
     }
     current_performance = ((double)count*100.0/((double)test_data->size()));
