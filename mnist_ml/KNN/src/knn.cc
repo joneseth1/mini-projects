@@ -123,7 +123,7 @@ double knn::calc_distance(data* query_point, data* input)
         exit(1); 
     }
 #ifdef EUCLID
-    for(unsigned i = 0; i < query_point->get_feature_vector(); i++)
+    for(unsigned i = 0; i < query_point->get_feature_vector_size(); i++)
     {
         distance = pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
     }
@@ -171,13 +171,14 @@ double knn::test_performance()
     }
     current_performance = ((double)count*100.0/((double)test_data->size()));
     printf("Test Performanc is: %3f %% \n", current_performance);
+    return current_performance;
 }
 
 int main() 
 {
     data_handler *dh = new data_handler();
-    dh->read_feature_vector("./train-images-idx3-ubyte");
-    dh->read_feature_labels("./train-labels-idx1-ubyte");
+    dh->read_feature_vector("../train-images-idx3-ubyte");
+    dh->read_feature_labels("../train-labels-idx1-ubyte");
     dh->split_data();
     dh->count_classes();
     knn *knearest = new knn();
