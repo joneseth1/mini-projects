@@ -1,4 +1,4 @@
-#include "knn.hpp"
+#include "../include/knn.hpp"
 #include "data_handler.hpp"
 #include "stdint.h"
 #include <cmath>
@@ -203,7 +203,7 @@ int main()
             if(performance > best_performance)
             {
                 best_performance = performance;
-                best_k = k;
+                best_k = i;
             }
         }
     }
