@@ -132,10 +132,8 @@ double knn::calc_distance(data* query_point, data* input)
 // TODO 
     for(unsigned i = 0; i < query_point->get_feature_vector_size(); i++)
     {
-        distance_1 += pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);
-        distance_2 += += pow(input->get_feature_vector()->at(i) - query_point->get_feature_vector()->at(i), 2);
+        distance += abs(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i));
     }
-    distance = distance_1 + distance_2
 #endif
 return distance;
 }
