@@ -4,7 +4,9 @@ CFLAGS := -std=c++11 -DEUCLID
 INCLUDE_DIR := C:/programs/random-fun/mini-projects/mnist_ml/include
 LIB_DIR := C:/programs/random-fun/mini-projects/mnist_ml/lib
 
-# Specify the full path to the library file
+
+//TODO fix make clean error 
+
 LIB := $(LIB_DIR)/libdata.so
 
 all: main

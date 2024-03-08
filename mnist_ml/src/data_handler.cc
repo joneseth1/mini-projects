@@ -187,6 +187,8 @@ std::vector<data *> * data_handler::get_validation_data()
 
 
 
+
+/*
 int main() 
 {
     data_handler *dh = new data_handler();
@@ -197,3 +199,5 @@ int main()
 
     return 0;
 }
+
+*/

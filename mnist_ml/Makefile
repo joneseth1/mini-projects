@@ -4,13 +4,13 @@ SRC := $(MNIST_ML_ROOT)/src
 CFLAGS := -shared -std=c++11 -g
 LIB_DATA := libdata.so
 
-all : $(LIB_DATA)
+all: $(LIB_DATA)
 
 $(LIB_DATA) : libdir objdir obj/data_handler.o obj/data.o 
 	$(CC) $(CFLAGS) -o $(MNIST_ML_ROOT)/lib/$(LIB_DATA) obj/*.o
 	rm -r $(MNIST_ML_ROOT)/obj
 
-libdir :
+libdir:
 	mkdir -p $(MNIST_ML_ROOT)/lib
 
 objdir:
