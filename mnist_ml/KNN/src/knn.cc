@@ -1,4 +1,5 @@
 #include "../include/knn.hpp"
+#include "../include/common.hpp"
 #include "data_handler.hpp"
 #include "stdint.h"
 #include <cmath>

@@ -1,7 +1,6 @@
 #ifndef __KNN_H
 #define __KNN_H
 
-
 #include "common.hpp"
 
 
@@ -14,7 +13,7 @@ class knn : public common_data
     knn(int);
     knn();
     ~knn();
-    
+
     void find_knearest(data *query_point);
     void set_k(int val);
     int predict();
