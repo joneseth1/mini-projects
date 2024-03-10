@@ -1,16 +1,14 @@
 CC=g++
-SRC := $(MNIST_ML_ROOT)/KNN/src
+SRC := $(PWD)/src
 CFLAGS := -std=c++11 -DEUCLID
-INCLUDE_DIR := $(MNIST_ML_ROOT)/include/*
-LIB_DIR := $(MNIST_ML_ROOT)/lib
+INCLUDE_DIR := $(PWD)/include
 
 
-LIB := $(LIB_DIR)/libdata.so
 
 all: main
 
-main: $(SRC)/knn.cc $(LIB)
-	$(CC) $(CFLAGS) $(SRC)/knn.cc -o main -L$(LIB_DIR) -I$(INCLUDE_DIR) $(LIB)
+main : $(SRC)/knn.cc
+	$(CC) $(CFLAGS) $(SRC)/knn.cc -o main -L$(LD_LIBRARY_PATH) -I$(INCLUDE_DIR) -ldata
 
 clean:
 	rm -f main.exe
