@@ -66,20 +66,6 @@ void knn::find_knearest(data *query_point)
     }
 }
 
-void knn::set_training_data(std::vector<data *> *vect)
-{
-    training_data = vect;
-}
-
-void knn::set_test_data(std::vector<data *> *vect)
-{
-    test_data = vect;
-}
-
-void knn::set_validation_data(std::vector<data *> *vect)
-{
-    validation_data = vect;
-}
 
 void knn::set_k(int val)
 {
@@ -129,7 +115,6 @@ double knn::calc_distance(data* query_point, data* input)
     }
     distance = sqrt(distance);
 #elif defined MANHATTAN
-// TODO 
     for(unsigned i = 0; i < query_point->get_feature_vector_size(); i++)
     {
         distance += abs(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i));

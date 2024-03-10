@@ -1,11 +1,9 @@
 CC=g++
-SRC := C:/programs/random-fun/mini-projects/mnist_ml/KNN/src
+SRC := $(MNIST_ML_ROOT)/KNN/src
 CFLAGS := -std=c++11 -DEUCLID
-INCLUDE_DIR := C:/programs/random-fun/mini-projects/mnist_ml/include
-LIB_DIR := C:/programs/random-fun/mini-projects/mnist_ml/lib
+INCLUDE_DIR := $(MNIST_ML_ROOT)/include/*
+LIB_DIR := $(MNIST_ML_ROOT)/lib
 
-
-//TODO fix make clean error 
 
 LIB := $(LIB_DIR)/libdata.so
 
