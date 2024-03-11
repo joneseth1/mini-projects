@@ -49,7 +49,7 @@ typedef struct cluster
             centroid->at(i) = value;
         }
 
-        if(class_counts->find(point->get_label()) == class_counts->end())
+        if(class_counts.find(point->get_label()) == class_counts.end())
         {
             class_counts[point->get_label()] = 1;
         } else 
