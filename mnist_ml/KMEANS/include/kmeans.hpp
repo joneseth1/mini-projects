@@ -56,7 +56,6 @@ typedef struct cluster
         {
             class_counts[point->get_label()]++;
         }
-
     }
 
 } cluster_t;
