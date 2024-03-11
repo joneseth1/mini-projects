@@ -76,5 +76,21 @@ typedef struct cluster
 
 } cluster_t;
 
+class kmeans : common_data
+{
+    int num_cluster;
+    std::vector<cluster_t *> *clusters;
+    std::unordered_set<int> *used_indexes;
+
+    public: 
+    kmeans(int k);
+    void init_clusters();
+    void init_clusters_for_each_class();
+    void train();
+    double euclidean_distance(std::vector<double> *, data *);
+    double validate();
+    double test();
+
+};
 
 #endif
