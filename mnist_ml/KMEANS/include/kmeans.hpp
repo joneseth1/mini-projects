@@ -58,6 +58,22 @@ typedef struct cluster
         }
     }
 
+    void set_most_frequent_class()
+    {
+        int best_class;
+        int freq = 0; 
+
+        for(auto kv : class_counts)
+        {
+            if(kv.second > freq)
+            {
+                freq = kv.second;
+                best_class = kv.first;
+            }
+        }
+        most_frequent_class = best_class;
+    }
+
 } cluster_t;
 
 
