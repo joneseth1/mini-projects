@@ -1,7 +1,8 @@
 #ifndef __KNN_H
 #define __KNN_H
 
-#include "common.hpp"
+#include "../common.hpp"
+
 
 
 class knn : public common_data      
