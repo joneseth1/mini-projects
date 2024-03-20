@@ -46,6 +46,7 @@ int img_loader() {
             pixel_count += 1;
         }
 
+        // keep track of the pixel_count for neruons later
         std::cout << pixel_count << std::endl;
         file.close();
     }
@@ -55,10 +56,8 @@ int img_loader() {
 
 
 
-
 int main() 
 {
-
     img_loader();
     return 0;
 }
