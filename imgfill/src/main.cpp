@@ -1,19 +1,24 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <filesystem>
 
 
-struct Pixel {
+namespace fs = std::filesystem;
+
+struct Pixel 
+{
     unsigned char red; 
     unsigned char green; 
     unsigned char blue; 
 };
 
 
-int img_loader() {
-    std::ifstream file("C:/programs/random-fun/mini-projects/imgfill/images/image.jpg", std::ios::binary); 
+int process_img(std::string path)
+{
+    std::ifstream file(path, std::ios::binary);
 
-    if (!file.is_open()) {
+     if (!file.is_open()) {
         std::cerr << "Error: Cannot open the file." << std::endl;
         return 1; 
     }
@@ -52,12 +57,30 @@ int img_loader() {
     }
 
     return 0;
+    
 }
+
+
+int process_data(std::string DATA_DIR)
+{
+
+    for(const auto& entry : fs::recursive_directory_iterator(DATA_DIR)) 
+    {
+        if(std::filesystem::is_regular_file(entry.path())) 
+        {
+            process_img(entry.path().string());
+        }
+    }
+    return 0;
+}
+
 
 
 
 int main() 
 {
-    img_loader();
+    std::string DATA_DIR = "C:/programs/random-fun/mini-projects/imgfill/images/";
+
+    process_data(DATA_DIR);
     return 0;
 }
