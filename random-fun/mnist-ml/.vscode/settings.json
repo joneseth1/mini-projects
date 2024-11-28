@@ -1,0 +1,11 @@
+{
+    "editor.cursorBlinking": "solid",
+    "files.associations": {
+        "list": "cpp",
+        "map": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp"
+    }
+}
