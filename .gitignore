@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# OCaml build files
+_build/
+*.native
+*.byte
+
+# Editor files
+*.swp
+*.vscode/
+

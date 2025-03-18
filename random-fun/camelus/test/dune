@@ -1,0 +1,4 @@
+(test 
+ (name test_nn)
+ (modules test_nn)
+ (libraries camelus))

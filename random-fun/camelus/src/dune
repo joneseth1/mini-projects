@@ -1,0 +1,8 @@
+(library 
+ (name camelus)
+ (modules matrix activation loss neural_network))
+
+(executable
+ (name train)
+ (modules train)
+ (libraries camelus))
