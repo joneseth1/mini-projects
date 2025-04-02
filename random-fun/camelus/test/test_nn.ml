@@ -41,8 +41,13 @@ let () =
     (of_array [| [| 1.0; 0.0 |] |], of_array [| [| 1.0 |] |]);
     (of_array [| [| 1.0; 1.0 |] |], of_array [| [| 0.0 |] |])
   ] in
-  train nn xor_data 0.1 1000
+  (* Print training data dimensions *)
+  List.iter (fun (x, y) -> 
+    Printf.printf "Training data input shape: %d x %d, output shape: %d x %d\n"
+      (Array.length x) (Array.length x.(0)) (Array.length y) (Array.length y.(0));
+  ) xor_data;
 
+  train nn xor_data 0.1 1000
 
 let () = test_xor ()
 

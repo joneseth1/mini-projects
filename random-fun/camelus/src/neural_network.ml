@@ -12,7 +12,7 @@ type t = {
   layers : layer list;  
 }
 
-(** Create a neural network with a given number of neurons in each layer *)
+(* Create a neural network with a given number of neurons in each layer *)
 let create_nn (layer_sizes : int list) activation_fn =
   let layers = 
     let rec create_layers sizes =
@@ -30,18 +30,35 @@ let create_nn (layer_sizes : int list) activation_fn =
   { layers }
 
 
-(** Forward pass through the network *)
+(* Forward pass through the network *)
 let forward (network : t) (input : matrix) : matrix =
   let rec forward_layers layers input_matrix =
     match layers with
     | [] -> input_matrix  
     | layer :: rest ->
+      (* Print input matrix dimensions *)
+      Printf.printf "Input to layer: %d x %d\n" (Array.length input_matrix) (Array.length input_matrix.(0));
+
       let weighted_input = Matrix.dot input_matrix layer.weights in
+
+      (* Print dimensions after dot product *)
+      Printf.printf "After dot product: %d x %d\n" (Array.length weighted_input) (Array.length weighted_input.(0));
+
       let output_with_bias = Matrix.add_scalar weighted_input 1.0 in
+
+      (* Print dimensions before activation function *)
+      Printf.printf "Before activation: %d x %d\n" (Array.length output_with_bias) (Array.length output_with_bias.(0));
+
       let activated_output = Matrix.apply_activation layer.activation_fn output_with_bias in
+
+      (* Print dimensions after activation function *)
+      Printf.printf "After activation: %d x %d\n" (Array.length activated_output) (Array.length activated_output.(0));
+
       forward_layers rest activated_output  
   in
   forward_layers network.layers input
+
+
 
 (* Perform a forward pass and store activations for backpropagation *)
 let forward_propagate nn input =

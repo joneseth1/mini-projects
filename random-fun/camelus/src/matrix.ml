@@ -19,7 +19,7 @@ let dot a b =
     let cols_a = Array.length a.(0) in  
     let cols_b = Array.length b.(0) in  
   
-    if Array.length b != cols_a then
+    if Array.length b.(0) <> cols_a then
         failwith "Matrix dimensions do not match for multiplication";  (* throw error if dimensions don't match *)
 
     let result = Array.init rows_a (fun _ -> Array.make cols_b 0.0) in  (* initialize the result matrix *)
