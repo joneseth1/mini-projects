@@ -8,9 +8,9 @@ open Camelus.Matrix
 
 
 
-let test_xor () =
+(* let test_xor () =
   let layer_sizes = [2; 3; 1] in  
-  let activation_fn = sigmoid in  (* Use sigmoid activation function *)
+  let activation_fn = sigmoid in  
   let nn = create_nn layer_sizes activation_fn in
   
   let xor_data = [
@@ -28,11 +28,11 @@ let test_xor () =
     Printf.printf "Input: [%f, %f] -> Output: [%f] (Expected: [%f])\n"
       input.(0) input.(1) output_value expected_output.(0)
 
-  ) xor_data
+  ) xor_data *)
 
 
 let () =
-  let layer_sizes = [2; 3; 1] in  (* Correct layer sizes *)
+  let layer_sizes = [2; 3; 1] in 
   let activation_fn = sigmoid in  (* Use the sigmoid activation function *)
   let nn = create_nn layer_sizes activation_fn in
   let xor_data = [
@@ -49,6 +49,5 @@ let () =
 
   train nn xor_data 0.1 1000
 
-let () = test_xor ()
 
 

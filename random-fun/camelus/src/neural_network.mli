@@ -21,7 +21,7 @@ val forward : t -> matrix -> matrix
 
 val train : 
   t -> (* Neural network *)
-  (Matrix.matrix * Matrix.matrix) list -> (* Training data: list of (input, expected output) *)
+  (Matrix.matrix * Matrix.matrix) list -> 
   float -> 
   int -> 
   unit

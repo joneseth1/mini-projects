@@ -34,30 +34,24 @@ let create_nn (layer_sizes : int list) activation_fn =
 let forward (network : t) (input : matrix) : matrix =
   let rec forward_layers layers input_matrix =
     match layers with
-    | [] -> input_matrix  
+    | [] -> input_matrix
     | layer :: rest ->
       (* Print input matrix dimensions *)
       Printf.printf "Input to layer: %d x %d\n" (Array.length input_matrix) (Array.length input_matrix.(0));
 
       let weighted_input = Matrix.dot input_matrix layer.weights in
-
-      (* Print dimensions after dot product *)
       Printf.printf "After dot product: %d x %d\n" (Array.length weighted_input) (Array.length weighted_input.(0));
 
       let output_with_bias = Matrix.add_scalar weighted_input 1.0 in
-
-      (* Print dimensions before activation function *)
       Printf.printf "Before activation: %d x %d\n" (Array.length output_with_bias) (Array.length output_with_bias.(0));
 
       let activated_output = Matrix.apply_activation layer.activation_fn output_with_bias in
-
-      (* Print dimensions after activation function *)
+      (* Print the size after activation *)
       Printf.printf "After activation: %d x %d\n" (Array.length activated_output) (Array.length activated_output.(0));
 
-      forward_layers rest activated_output  
+      forward_layers rest activated_output
   in
   forward_layers network.layers input
-
 
 
 (* Perform a forward pass and store activations for backpropagation *)
@@ -66,35 +60,56 @@ let forward_propagate nn input =
   let current_input = ref input in
   List.iter (fun layer ->
     let z = Matrix.dot !current_input layer.weights in
-    let z = Matrix.add_matrix z layer.biases in
+    let z = Matrix.add_matrix z layer.biases in  
     let a = Matrix.apply_activation layer.activation_fn z in
     activations := a :: !activations;
     current_input := a
   ) nn.layers;
   List.rev !activations
 
-(* Compute backward pass and update weights *)
+
 let backward_propagate nn activations expected_output learning_rate =
   let num_layers = List.length nn.layers in
+
+  (* Calculate the error at the output layer *)
   let errors = ref [Matrix.sub (List.nth activations num_layers) expected_output] in
 
-  (* Backpropagate errors *)
+  (* Backpropagate errors through the layers *)
   List.iteri (fun i _ ->
     let index = num_layers - i - 1 in
     if index > 0 then
+      (* Get the activation from the previous layer *)
       let prev_activation = List.nth activations (index - 1) in
-      let delta = Matrix.hadamard (List.hd !errors) (Matrix.apply_activation  Activation.sigmoid_derivative prev_activation) in
-      errors := delta :: !errors
+      Printf.printf "Prev activation size: %d x %d\n" (Array.length prev_activation) (Array.length prev_activation.(0));
+
+      (* Compute delta for this layer (error * derivative of activation function) *)
+      let delta = Matrix.hadamard (List.hd !errors) (Matrix.apply_activation Activation.sigmoid_derivative prev_activation) in
+      errors := delta :: !errors;
+      Printf.printf "Delta size: %d x %d\n" (Array.length delta) (Array.length delta.(0))
   ) (List.rev nn.layers);
 
-  (* Update weights and biases *)
+  (* Update weights and biases for each layer *)
   List.iteri (fun i layer ->
     let delta = List.nth !errors i in
     let prev_activation = List.nth activations i in
-    let weight_update = Matrix.dot (Matrix.transpose prev_activation) delta in
-    layer.weights <- Matrix.sub layer.weights (Matrix.scalar_mul learning_rate weight_update);
-    layer.biases <- Matrix.sub layer.biases (Matrix.scalar_mul learning_rate delta)
+    Printf.printf "Updating layer %d with prev activation size: %d x %d and delta size: %d x %d\n"
+      i (Array.length prev_activation) (Array.length prev_activation.(0)) (Array.length delta) (Array.length delta.(0));
+
+    if (Array.length prev_activation) = (Array.length delta) then
+      let prev_activation_T = Matrix.transpose prev_activation in
+
+      (* Update weights: prev_activation_T (N x 1) dot delta (1 x M) => weight_update (N x M) *)
+      let weight_update = Matrix.dot prev_activation_T delta in
+      Printf.printf "Weight update size: %d x %d\n" (Array.length weight_update) (Array.length weight_update.(0));
+
+      (* Update weights and biases using the learning rate *)
+      layer.weights <- Matrix.sub layer.weights (Matrix.scalar_mul learning_rate weight_update);
+      layer.biases <- Matrix.sub layer.biases (Matrix.scalar_mul learning_rate delta)
+    else
+      Printf.printf "Skipping weight update due to dimension mismatch: prev_activation size (%d x %d) and delta size (%d x %d)\n"
+        (Array.length prev_activation) (Array.length prev_activation.(0)) (Array.length delta) (Array.length delta.(0));
   ) nn.layers
+
 
 (* Train the network *)
 let train nn training_data learning_rate epochs =

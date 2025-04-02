@@ -17,12 +17,16 @@ let random rows cols =
 let dot a b =
     let rows_a = Array.length a in
     let cols_a = Array.length a.(0) in  
+    let rows_b = Array.length b in  
     let cols_b = Array.length b.(0) in  
-  
-    if Array.length b.(0) <> cols_a then
-        failwith "Matrix dimensions do not match for multiplication";  (* throw error if dimensions don't match *)
 
-    let result = Array.init rows_a (fun _ -> Array.make cols_b 0.0) in  (* initialize the result matrix *)
+    Printf.printf "Matrix.dot: A (%d x %d) × B (%d x %d)\n" rows_a cols_a rows_b cols_b;
+
+    if cols_a <> rows_b then
+        failwith (Printf.sprintf "Matrix dimensions do not match: %d x %d and %d x %d"
+                                rows_a cols_a rows_b cols_b);
+
+    let result = Array.init rows_a (fun _ -> Array.make cols_b 0.0) in
     for i = 0 to rows_a - 1 do
         for j = 0 to cols_b - 1 do
             for k = 0 to cols_a - 1 do  
@@ -30,15 +34,18 @@ let dot a b =
             done
         done
     done;
-
-  result
+    result
 
 (* Add a scalar to each element of the matrix *)
 let add_scalar matrix scalar = 
+
+    Printf.printf "Adding scalar to matrix of size: %d x %d\n" (Array.length matrix) (Array.length matrix.(0));
     Array.map (fun row -> Array.map (fun x -> x +. scalar) row) matrix
 
 (* Apply an activation function to each element of the matrix *)
 let apply_activation activation_fn matrix = 
+
+    Printf.printf "Applying activation to matrix of size: %d x %d\n" (Array.length matrix) (Array.length matrix.(0));
     Array.map (fun row -> Array.map activation_fn row) matrix
 
 (* Matrix addition *)
